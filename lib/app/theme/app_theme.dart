@@ -45,23 +45,23 @@ class AppTheme {
       ),
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ButtonStyle(
-          backgroundColor: MaterialStateProperty.all(_primaryColor),
-          foregroundColor: MaterialStateProperty.all(Colors.white),
-          shape: MaterialStateProperty.all(
+          backgroundColor: WidgetStateProperty.all(_primaryColor),
+          foregroundColor: WidgetStateProperty.all(Colors.white),
+          shape: WidgetStateProperty.all(
             RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
           ),
-          padding: MaterialStateProperty.all(
+          padding: WidgetStateProperty.all(
             const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
           ),
         ),
       ),
       dataTableTheme: DataTableThemeData(
-        headingRowColor: MaterialStateProperty.all(_primaryColor.withOpacity(0.1)),
-        dataRowColor: MaterialStateProperty.all(Colors.white),
+        headingRowColor: WidgetStateProperty.all(_primaryColor.withAlpha(26)), // 10% opacity
+        dataRowColor: WidgetStateProperty.all(Colors.white),
         dividerThickness: 0.0,
         headingTextStyle: const TextStyle(fontWeight: FontWeight.bold, color: _primaryColor),
       ),
-      cardTheme: CardTheme(
+      cardTheme: CardThemeData(
         elevation: 1.0,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
         margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 0),
@@ -92,23 +92,23 @@ class AppTheme {
       ),
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ButtonStyle(
-          backgroundColor: MaterialStateProperty.all(_secondaryColor),
-          foregroundColor: MaterialStateProperty.all(Colors.white),
-          shape: MaterialStateProperty.all(
+          backgroundColor: WidgetStateProperty.all(_secondaryColor),
+          foregroundColor: WidgetStateProperty.all(Colors.white),
+          shape: WidgetStateProperty.all(
             RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
           ),
-          padding: MaterialStateProperty.all(
+          padding: WidgetStateProperty.all(
             const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
           ),
         ),
       ),
       dataTableTheme: DataTableThemeData(
-        headingRowColor: MaterialStateProperty.all(Colors.grey[800]),
-        dataRowColor: MaterialStateProperty.all(Colors.grey[850]),
+        headingRowColor: WidgetStateProperty.all(Colors.grey[800]),
+        dataRowColor: WidgetStateProperty.all(Colors.grey[850]),
         dividerThickness: 0.0,
         headingTextStyle: const TextStyle(fontWeight: FontWeight.bold, color: Colors.white70),
       ),
-      cardTheme: CardTheme(
+      cardTheme: CardThemeData(
         elevation: 1.0,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
         margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 0),

@@ -10,7 +10,6 @@ class UserDetailsScreen extends GetView<UserDetailsController> {
   @override
   Widget build(BuildContext context) {
     final UserModel user = controller.user;
-    final theme = Theme.of(context);
 
     return Scaffold(
       appBar: AppBar(
@@ -76,7 +75,7 @@ class UserDetailsScreen extends GetView<UserDetailsController> {
       children: [
         CircleAvatar(
           radius: 60,
-          backgroundColor: theme.colorScheme.primary.withOpacity(0.1),
+          backgroundColor: theme.colorScheme.primary.withAlpha(26), // 10% opacity
           child: Text(
             user.basicInfo.firstName[0].toUpperCase(),
             style: TextStyle(

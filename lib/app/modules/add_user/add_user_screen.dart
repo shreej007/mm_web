@@ -8,8 +8,6 @@ class AddUserScreen extends GetView<AddUserController> {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-
     return Scaffold(
       appBar: AppBar(
         title: Obx(() => Text(controller.isEditing.value ? 'Edit User' : 'Add New User')),
