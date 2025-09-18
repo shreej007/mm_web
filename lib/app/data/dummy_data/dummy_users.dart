@@ -1,0 +1,70 @@
+
+import 'package:myapp/app/data/models/user_model.dart';
+
+final List<UserModel> dummyUsers = [
+  UserModel(
+    basicInfo: BasicInfo(
+      firstName: 'Rushi',
+      middleName: 'Vishwanath',
+      lastName: 'Patil',
+      gender: 'Male',
+      birthdate: '1995-06-15',
+      subCaste: '96 Kuli Maratha',
+      email: 'rushi@example.com',
+      mobile: '9876543210',
+      password: 'password123',
+    ),
+    physicalAttribute: PhysicalAttribute(
+      height: '5\'9"',
+      weight: '72kg',
+      complexion: 'Fair',
+      bloodGroup: 'O+',
+    ),
+    horoscopeDetails: HoroscopeDetails(
+      birthTime: '10:45 AM',
+      birthDistrict: 'Pune, Maharashtra',
+      rashi: 'Vrushabh',
+      nakshatra: 'Rohini',
+    ),
+    careerDetails: CareerDetails(
+      degree: 'B.E.',
+      edufield: 'Computer Science',
+      occupationType: 'Software Developer',
+      occupationPlace: 'Pune',
+      personalIncome: 12000,
+    ),
+    familyDetails: FamilyDetails(
+      fatherAlive: true,
+      motherAlive: true,
+      brothers: 0,
+      marriedBrothers: 0,
+      sisters: 2,
+      marriedSister: 1,
+      parentNames: 'Rahul Kulkarni & Shalini Kulkarni',
+      parentOccupation: 'Government Service',
+      parentsResideCity: 'Mumbai',
+      nativeDistrict: 'Satara',
+      nativeTaluka: 'Karad',
+      familyEstate: 'Flat in Mumbai + ancestral home',
+      surnamesOfRelatives: ['Joshi', 'Kulkarni'],
+      maternalPlaceSurname: 'Deshpande',
+      intercasteStatus: 'Yes',
+      intercasteDetails: 'Maratha-Brahmin',
+    ),
+    expectations: Expectations(
+      preferredCities: ['Mumbai', 'Pune', 'Bangalore'],
+      mangalDosh: true,
+      expectedSubCaste: 'Maratha',
+      expectedHeight: '5\'6" - 6\'0"',
+      minAgeGap: 3,
+      expectedEducation: 'MBA/Engineer',
+      expectedOccupation: 'Corporate Professional',
+      incomePerMonth: 60000.0,
+      expectedMaritalStatus: 'Never Married',
+    ),
+    profilePhotos: ProfilePhotos(
+      profilePicUrl: null,
+      album: [],
+    ),
+  ),
+];
