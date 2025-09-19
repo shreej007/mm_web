@@ -22,7 +22,7 @@ class MyApp extends StatelessWidget {
     final themeProvider = Provider.of<ThemeProvider>(context);
 
     return GetMaterialApp(
-      title: 'Matrimony Admin Panel',
+      title: 'Maratha Mangal',
       theme: AppTheme.lightTheme,
       darkTheme: AppTheme.darkTheme,
       themeMode: themeProvider.themeMode,

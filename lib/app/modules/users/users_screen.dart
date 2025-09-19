@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:myapp/app/modules/users/users_controller.dart';
@@ -38,63 +37,70 @@ class UsersScreen extends GetView<UsersController> {
               child: Obx(
                 () => Card(
                   clipBehavior: Clip.antiAlias,
-                  child: SingleChildScrollView(
-                    scrollDirection: Axis.horizontal,
-                    child: DataTable(
-                      columns: const [
-                        DataColumn(label: Text('Name')),
-                        DataColumn(label: Text('Gender')),
-                        DataColumn(label: Text('Birthdate')),
-                        DataColumn(label: Text('Occupation')),
-                        DataColumn(label: Text('Sub-Caste')),
-                        DataColumn(label: Text('Email')),
-                        DataColumn(label: Text('Mobile')),
-                        DataColumn(label: Text('Actions')),
-                      ],
-                      rows: controller.filteredUsers.map((user) {
-                        final fullName =
-                            '${user.basicInfo.firstName} ${user.basicInfo.lastName}';
-                        return DataRow(
-                          cells: [
-                            DataCell(Text(fullName)),
-                            DataCell(Text(user.basicInfo.gender)),
-                            DataCell(Text(user.basicInfo.birthdate)),
-                            DataCell(Text(user.careerDetails.occupationType)),
-                            DataCell(Text(user.basicInfo.subCaste)),
-                            DataCell(Text(user.basicInfo.email)),
-                            DataCell(Text(user.basicInfo.mobile)),
-                            DataCell(
-                              Row(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  IconButton(
-                                    icon: const Icon(Icons.visibility),
-                                    onPressed: () =>
-                                        controller.goToUserDetails(user),
-                                    tooltip: 'View Details',
-                                    color: theme.colorScheme.secondary,
-                                  ),
-                                  IconButton(
-                                    icon: const Icon(Icons.edit),
-                                    onPressed: () =>
-                                        controller.goToEditUser(user),
-                                    tooltip: 'Edit User',
-                                    color: theme.primaryColor,
-                                  ),
-                                  IconButton(
-                                    icon: const Icon(Icons.delete),
-                                    onPressed: () =>
-                                        _showDeleteConfirmation(context, user),
-                                    tooltip: 'Delete User',
-                                    color: theme.colorScheme.error,
+                  child: LayoutBuilder(
+                    builder: (context, constraints) {
+                      return SingleChildScrollView(
+                        scrollDirection: Axis.horizontal,
+                        child: ConstrainedBox(
+                          constraints: BoxConstraints(minWidth: constraints.maxWidth),
+                          child: DataTable(
+                            columns: const [
+                              DataColumn(label: Text('Name')),
+                              DataColumn(label: Text('Gender')),
+                              DataColumn(label: Text('Birthdate')),
+                              DataColumn(label: Text('Occupation')),
+                              DataColumn(label: Text('Sub-Caste')),
+                              DataColumn(label: Text('Email')),
+                              DataColumn(label: Text('Mobile')),
+                              DataColumn(label: Text('Actions')),
+                            ],
+                            rows: controller.filteredUsers.map((user) {
+                              final fullName =
+                                  '${user.basicInfo.firstName} ${user.basicInfo.lastName}';
+                              return DataRow(
+                                cells: [
+                                  DataCell(Text(fullName)),
+                                  DataCell(Text(user.basicInfo.gender)),
+                                  DataCell(Text(user.basicInfo.birthdate)),
+                                  DataCell(Text(user.careerDetails.occupationType)),
+                                  DataCell(Text(user.basicInfo.subCaste)),
+                                  DataCell(Text(user.basicInfo.email)),
+                                  DataCell(Text(user.basicInfo.mobile)),
+                                  DataCell(
+                                    Row(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        IconButton(
+                                          icon: const Icon(Icons.visibility),
+                                          onPressed: () =>
+                                              controller.goToUserDetails(user),
+                                          tooltip: 'View Details',
+                                          color: theme.colorScheme.secondary,
+                                        ),
+                                        IconButton(
+                                          icon: const Icon(Icons.edit),
+                                          onPressed: () =>
+                                              controller.goToEditUser(user),
+                                          tooltip: 'Edit User',
+                                          color: theme.primaryColor,
+                                        ),
+                                        IconButton(
+                                          icon: const Icon(Icons.delete),
+                                          onPressed: () =>
+                                              _showDeleteConfirmation(context, user),
+                                          tooltip: 'Delete User',
+                                          color: theme.colorScheme.error,
+                                        ),
+                                      ],
+                                    ),
                                   ),
                                 ],
-                              ),
-                            ),
-                          ],
-                        );
-                      }).toList(),
-                    ),
+                              );
+                            }).toList(),
+                          ),
+                        ),
+                      );
+                    },
                   ),
                 ),
               ),

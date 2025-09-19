@@ -11,95 +11,125 @@ class RootScreen extends GetView<RootController> {
 
   @override
   Widget build(BuildContext context) {
+    final isSmallScreen = MediaQuery.of(context).size.width < 600;
     return Obx(
       () => Scaffold(
         backgroundColor: Colors.grey[200],
-        appBar: AppBar(
-          backgroundColor: Colors.white,
-          elevation: 0,
-          iconTheme: const IconThemeData(color: Color(0xfffa493d)),
-          title: Text(
-            controller.getTitle(controller.selectedIndex),
-            style: AppTextStyles.headingStyle.copyWith(fontSize: 22),
-          ),
-        ),
-        drawer: Drawer(
-          child: ListView(
-            padding: EdgeInsets.zero,
-            children: [
-              DrawerHeader(
-                decoration: const BoxDecoration(color: Color(0xfffa493d)),
-                child: Center(
-                  child: Text(
-                    'Matrimony',
-                    style: AppTextStyles.headingStyle.copyWith(
-                      color: Colors.white,
-                    ),
-                  ),
+        appBar: isSmallScreen
+            ? AppBar(
+                backgroundColor: Colors.white,
+                elevation: 0,
+                iconTheme: const IconThemeData(color: Color(0xfffa493d)),
+                title: Text(
+                  controller.getTitle(controller.selectedIndex),
+                  style: AppTextStyles.headingStyle.copyWith(fontSize: 22),
                 ),
+              )
+            : null,
+        drawer: isSmallScreen
+            ? Drawer(
+                child: ListView(
+                  padding: EdgeInsets.zero,
+                  children: [
+                    DrawerHeader(
+                      decoration: const BoxDecoration(color: Color(0xfffa493d)),
+                      child: Center(
+                        child: Text(
+                          'Maratha Mangal',
+                          style: AppTextStyles.headingStyle.copyWith(
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
+                    ),
+                    ListTile(
+                      leading: const Icon(Icons.dashboard, color: Color(0xfffa493d)),
+                      title: const Text('Dashboard'),
+                      onTap: () {
+                        controller.setSelectedIndex(0);
+                        Get.back();
+                      },
+                    ),
+                    ListTile(
+                      leading: const Icon(Icons.people, color: Color(0xfffa493d)),
+                      title: const Text('Users'),
+                      onTap: () {
+                        controller.setSelectedIndex(1);
+                        Get.back();
+                      },
+                    ),
+                    ListTile(
+                      leading: const Icon(Icons.settings, color: Color(0xfffa493d)),
+                      title: const Text('Settings'),
+                      onTap: () {
+                        controller.setSelectedIndex(2);
+                        Get.back();
+                      },
+                    ),
+                  ],
+                ),
+              )
+            : null,
+        body: Row(
+          children: [
+            if (!isSmallScreen)
+              NavigationRail(
+                selectedIndex: controller.selectedIndex,
+                onDestinationSelected: controller.setSelectedIndex,
+                labelType: NavigationRailLabelType.all,
+                backgroundColor: Colors.white,
+                selectedLabelTextStyle: const TextStyle(color: Color(0xfffa493d)),
+                unselectedLabelTextStyle: const TextStyle(color: Colors.grey),
+                 leading: Text(
+                  'Maratha Mangal',
+                  style: AppTextStyles.headingStyle.copyWith(fontSize: 22),
+                ),
+                destinations: const [
+                  NavigationRailDestination(
+                    icon: Icon(Icons.dashboard),
+                    label: Text('Dashboard'),
+                  ),
+                  NavigationRailDestination(
+                    icon: Icon(Icons.people),
+                    label: Text('Users'),
+                  ),
+                  NavigationRailDestination(
+                    icon: Icon(Icons.settings),
+                    label: Text('Settings'),
+                  ),
+                ],
               ),
-              ListTile(
-                leading: const Icon(Icons.dashboard, color: Color(0xfffa493d)),
-                title: const Text('Dashboard'),
-                onTap: () {
-                  controller.setSelectedIndex(0);
-                  Get.back();
-                },
+            Expanded(
+              child: IndexedStack(
+                index: controller.selectedIndex,
+                children: const [
+                  DashboardScreen(),
+                  UsersScreen(),
+                  SettingsScreen(),
+                ],
               ),
-              ListTile(
-                leading: const Icon(Icons.people, color: Color(0xfffa493d)),
-                title: const Text('Users'),
-                onTap: () {
-                  controller.setSelectedIndex(1);
-                  Get.back();
-                },
-              ),
-              ListTile(
-                leading: const Icon(Icons.settings, color: Color(0xfffa493d)),
-                title: const Text('Settings'),
-                onTap: () {
-                  controller.setSelectedIndex(2);
-                  Get.back();
-                },
-              ),
-            ],
-          ),
-        ),
-        body: Card(
-          margin: const EdgeInsets.all(16),
-          elevation: 4,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(16),
-          ),
-          child: Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: IndexedStack(
-              index: controller.selectedIndex,
-              children: const [
-                DashboardScreen(),
-                UsersScreen(),
-                SettingsScreen(),
-              ],
-            ),
-          ),
-        ),
-        bottomNavigationBar: BottomNavigationBar(
-          currentIndex: controller.selectedIndex,
-          onTap: controller.setSelectedIndex,
-          selectedItemColor: const Color(0xfffa493d),
-          unselectedItemColor: Colors.grey,
-          items: const [
-            BottomNavigationBarItem(
-              icon: Icon(Icons.dashboard),
-              label: 'Dashboard',
-            ),
-            BottomNavigationBarItem(icon: Icon(Icons.people), label: 'Users'),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.settings),
-              label: 'Settings',
             ),
           ],
         ),
+        bottomNavigationBar: isSmallScreen
+            ? BottomNavigationBar(
+                currentIndex: controller.selectedIndex,
+                onTap: controller.setSelectedIndex,
+                selectedItemColor: const Color(0xfffa493d),
+                unselectedItemColor: Colors.grey,
+                items: const [
+                  BottomNavigationBarItem(
+                    icon: Icon(Icons.dashboard),
+                    label: 'Dashboard',
+                  ),
+                  BottomNavigationBarItem(icon: Icon(Icons.people), label: 'Users'),
+                  BottomNavigationBarItem(
+                    icon: Icon(Icons.settings),
+                    label: 'Settings',
+                  ),
+                ],
+              )
+            : null,
       ),
     );
   }
