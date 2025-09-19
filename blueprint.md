@@ -2,7 +2,9 @@
 
 ## Overview
 
-This document outlines the features and design of a matrimoniale matchmaking application. The app allows users to create detailed profiles, browse other users, and manage their information.
+This document outlines the features and design of a matrimonial matchmaking application. The app allows users to create detailed profiles, browse other users, and manage their information.
+
+**Supported Platforms:** Android, Web
 
 ## Core Features
 

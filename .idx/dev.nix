@@ -8,6 +8,7 @@
     pkgs.jdk21
     pkgs.unzip
     pkgs.google-chrome
+    pkgs.cmake
   ];
   # Sets environment variables in the workspace
   env = {};

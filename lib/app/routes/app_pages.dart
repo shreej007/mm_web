@@ -9,8 +9,6 @@ import '../modules/root/root_binding.dart';
 import '../modules/root/root_screen.dart';
 import '../modules/settings/settings_binding.dart';
 import '../modules/settings/settings_screen.dart';
-import '../modules/splash/splash_binding.dart';
-import '../modules/splash/splash_screen.dart';
 import '../modules/user_details/user_details_binding.dart';
 import '../modules/user_details/user_details_screen.dart';
 import '../modules/users/users_binding.dart';
@@ -19,18 +17,13 @@ import '../modules/users/users_screen.dart';
 part 'app_routes.dart';
 
 class AppPages {
-  static const initial = Routes.splash;
+  static const initial = Routes.login;
 
   static final routes = [
     GetPage(
       name: Paths.login,
       page: () => const LoginScreen(),
       binding: LoginBinding(),
-    ),
-    GetPage(
-      name: Paths.splash,
-      page: () => const SplashScreen(),
-      binding: SplashBinding(),
     ),
     GetPage(
       name: Paths.root,

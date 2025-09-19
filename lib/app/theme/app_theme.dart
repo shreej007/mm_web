@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class AppTheme {
-  static const Color _primaryColor = Color(0xFF6A1B9A); // Deep Purple
-  static const Color _secondaryColor = Color(0xFFF57C00); // Orange
+  static const Color _primaryColor = Color(0xFFD32F2F); // Red
+  static const Color _secondaryColor = Color(0xFFFFC107); // Amber
 
   static final TextTheme _lightTextTheme = GoogleFonts.latoTextTheme(
     const TextTheme(
@@ -55,6 +55,10 @@ class AppTheme {
           ),
         ),
       ),
+      floatingActionButtonTheme: FloatingActionButtonThemeData(
+        backgroundColor: _primaryColor,
+        foregroundColor: Colors.white,
+      ),
       dataTableTheme: DataTableThemeData(
         headingRowColor: WidgetStateProperty.all(_primaryColor.withAlpha(26)), // 10% opacity
         dataRowColor: WidgetStateProperty.all(Colors.white),
@@ -102,6 +106,10 @@ class AppTheme {
           ),
         ),
       ),
+      floatingActionButtonTheme: FloatingActionButtonThemeData(
+        backgroundColor: _secondaryColor,
+        foregroundColor: Colors.white,
+      ),
       dataTableTheme: DataTableThemeData(
         headingRowColor: WidgetStateProperty.all(Colors.grey[800]),
         dataRowColor: WidgetStateProperty.all(Colors.grey[850]),
@@ -118,7 +126,7 @@ class AppTheme {
 }
 
 class ThemeProvider with ChangeNotifier {
-  ThemeMode _themeMode = ThemeMode.system;
+  ThemeMode _themeMode = ThemeMode.light;
 
   ThemeMode get themeMode => _themeMode;
 

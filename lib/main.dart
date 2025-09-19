@@ -29,32 +29,6 @@ class MyApp extends StatelessWidget {
       initialRoute: AppPages.initial,
       getPages: AppPages.routes,
       debugShowCheckedModeBanner: false,
-      builder: (context, child) {
-        return Scaffold(
-          appBar: AppBar(
-            title: Text(
-              'Matrimony Admin Panel',
-              style: Theme.of(context).appBarTheme.titleTextStyle,
-            ),
-            actions: [
-              IconButton(
-                icon: Icon(
-                  themeProvider.themeMode == ThemeMode.dark
-                      ? Icons.light_mode
-                      : Icons.dark_mode,
-                ),
-                onPressed: () {
-                  themeProvider.toggleTheme(
-                    themeProvider.themeMode == ThemeMode.light,
-                  );
-                },
-                tooltip: 'Toggle Theme',
-              ),
-            ],
-          ),
-          body: child,
-        );
-      },
     );
   }
 }
