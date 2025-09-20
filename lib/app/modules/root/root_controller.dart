@@ -16,6 +16,8 @@ class RootController extends GetxController {
       case 1:
         return 'Users';
       case 2:
+        return 'Membership';
+      case 3:
         return 'Settings';
       default:
         return 'Dashboard';

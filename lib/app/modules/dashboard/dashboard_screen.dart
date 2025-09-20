@@ -20,52 +20,62 @@ class DashboardScreen extends StatelessWidget {
         .length;
 
     return Scaffold(
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          children: [
-            Obx(
-              () => GridView.count(
-                shrinkWrap: true,
-                crossAxisCount: isSmallScreen ? 2 : 4,
-                crossAxisSpacing: 16,
-                mainAxisSpacing: 16,
-                childAspectRatio: isSmallScreen ? 1 : 1.8,
-                children: [
-                  _buildSummaryCard(
-                    'Total Users',
-                    usersController.filteredUsers.length.toString(),
-                    Icons.people,
-                    const Color(0xfffa493d),
-                    isSmallScreen,
-                  ),
-                  _buildSummaryCard(
-                    'Total Brides',
-                    bridesCount.toString(),
-                    Icons.female,
-                    const Color(0xFF03DAC6),
-                    isSmallScreen,
-                  ),
-                  _buildSummaryCard(
-                    'Total Grooms',
-                    groomsCount.toString(),
-                    Icons.male,
-                    Colors.orange,
-                    isSmallScreen,
-                  ),
-                  _buildSummaryCard(
-                    'New Users',
-                    '56', // Placeholder
-                    Icons.person_add,
-                    Colors.green,
-                    isSmallScreen,
-                  ),
-                ],
+      body: SafeArea(
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            children: [
+              Obx(
+                () => GridView.count(
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(), // Disable GridView's scrolling
+                  crossAxisCount: isSmallScreen ? 2 : 5,
+                  crossAxisSpacing: 16,
+                  mainAxisSpacing: 16,
+                  childAspectRatio: isSmallScreen ? 1 : 1.2,
+                  children: [
+                    _buildSummaryCard(
+                      'Total Users',
+                      usersController.filteredUsers.length.toString(),
+                      Icons.groups_2,
+                      [const Color(0xff6a11cb), const Color(0xff2575fc)],
+                      isSmallScreen,
+                    ),
+                    _buildSummaryCard(
+                      'Total Brides',
+                      bridesCount.toString(),
+                      Icons.woman_2,
+                      [const Color(0xffc94b4b), const Color(0xff4b134f)],
+                      isSmallScreen,
+                    ),
+                    _buildSummaryCard(
+                      'Total Grooms',
+                      groomsCount.toString(),
+                      Icons.man_2,
+                      [const Color(0xfff09819), const Color(0xffedde5d)],
+                      isSmallScreen,
+                    ),
+                    _buildSummaryCard(
+                      'New Users',
+                      '56', // Placeholder
+                      Icons.person_add_alt_1,
+                      [const Color(0xff00b09b), const Color(0xff96c93d)],
+                      isSmallScreen,
+                    ),
+                    _buildSummaryCard(
+                      'Active Users',
+                      '120', // Placeholder
+                      Icons.pie_chart,
+                      [const Color(0xffe96443), const Color(0xff904e95)],
+                      isSmallScreen,
+                    ),
+                  ],
+                ),
               ),
-            ),
-            const SizedBox(height: 24),
-            _buildChart(),
-          ],
+              const SizedBox(height: 24),
+              _buildChart(),
+            ],
+          ),
         ),
       ),
     );
@@ -75,35 +85,53 @@ class DashboardScreen extends StatelessWidget {
     String title,
     String value,
     IconData icon,
-    Color color,
+    List<Color> gradientColors,
     bool isSmallScreen,
   ) {
     return Card(
-      elevation: 4,
+      elevation: 8,
+      clipBehavior: Clip.antiAlias,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-      child: Padding(
-        padding: const EdgeInsets.all(12.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(icon, size: isSmallScreen ? 40 : 32, color: color),
-            const SizedBox(height: 8),
-            Text(
-              title,
-              textAlign: TextAlign.center,
-              style: AppTextStyles.headingStyle.copyWith(
-                fontSize: isSmallScreen ? 16 : 14,
+      child: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: gradientColors,
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+          ),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 16.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Icon(icon, size: isSmallScreen ? 40 : 36, color: Colors.white.withOpacity(0.9)),
+              const SizedBox.shrink(),
+              Column(
+                children: [
+                  Text(
+                    title,
+                    textAlign: TextAlign.center,
+                    style: AppTextStyles.headingStyle.copyWith(
+                      fontSize: isSmallScreen ? 16 : 15,
+                      color: Colors.white,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                  const SizedBox(height: 4),
+                  Text(
+                    value,
+                    style: AppTextStyles.headingStyle.copyWith(
+                      fontSize: isSmallScreen ? 28 : 24,
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ],
               ),
-            ),
-            const SizedBox(height: 4),
-            Text(
-              value,
-              style: AppTextStyles.headingStyle.copyWith(
-                fontSize: isSmallScreen ? 24 : 20,
-                color: color,
-              ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

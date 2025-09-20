@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:myapp/app/modules/membership/membership_screen.dart';
 import '../dashboard/dashboard_screen.dart';
 import 'root_controller.dart';
 import '../settings/settings_screen.dart';
@@ -59,10 +60,18 @@ class RootScreen extends GetView<RootController> {
                       },
                     ),
                     ListTile(
+                      leading: const Icon(Icons.card_membership, color: Color(0xfffa493d)),
+                      title: const Text('Membership'),
+                      onTap: () {
+                        controller.setSelectedIndex(2);
+                        Get.back();
+                      },
+                    ),
+                    ListTile(
                       leading: const Icon(Icons.settings, color: Color(0xfffa493d)),
                       title: const Text('Settings'),
                       onTap: () {
-                        controller.setSelectedIndex(2);
+                        controller.setSelectedIndex(3);
                         Get.back();
                       },
                     ),
@@ -70,46 +79,57 @@ class RootScreen extends GetView<RootController> {
                 ),
               )
             : null,
-        body: Row(
-          children: [
-            if (!isSmallScreen)
-              NavigationRail(
-                selectedIndex: controller.selectedIndex,
-                onDestinationSelected: controller.setSelectedIndex,
-                labelType: NavigationRailLabelType.all,
-                backgroundColor: Colors.white,
-                selectedLabelTextStyle: const TextStyle(color: Color(0xfffa493d)),
-                unselectedLabelTextStyle: const TextStyle(color: Colors.grey),
-                 leading: Text(
-                  'Maratha Mangal',
-                  style: AppTextStyles.headingStyle.copyWith(fontSize: 22),
+        body: SafeArea(
+          child: Row(
+            children: [
+              if (!isSmallScreen)
+                NavigationRail(
+                  selectedIndex: controller.selectedIndex,
+                  onDestinationSelected: controller.setSelectedIndex,
+                  labelType: NavigationRailLabelType.all,
+                  backgroundColor: Colors.white,
+                  selectedLabelTextStyle: const TextStyle(color: Color(0xfffa493d)),
+                  unselectedLabelTextStyle: const TextStyle(color: Colors.grey),
+                   leading: Padding(
+                     padding: const EdgeInsets.symmetric(vertical: 8.0),
+                     child: Text(
+                      'Maratha Mangal',
+                      textAlign: TextAlign.center,
+                      style: AppTextStyles.headingStyle.copyWith(fontSize: 18),
+                                       ),
+                   ),
+                  destinations: const [
+                    NavigationRailDestination(
+                      icon: Icon(Icons.dashboard),
+                      label: Text('Dashboard'),
+                    ),
+                    NavigationRailDestination(
+                      icon: Icon(Icons.people),
+                      label: Text('Users'),
+                    ),
+                    NavigationRailDestination(
+                      icon: Icon(Icons.card_membership),
+                      label: Text('Membership'),
+                    ),
+                    NavigationRailDestination(
+                      icon: Icon(Icons.settings),
+                      label: Text('Settings'),
+                    ),
+                  ],
                 ),
-                destinations: const [
-                  NavigationRailDestination(
-                    icon: Icon(Icons.dashboard),
-                    label: Text('Dashboard'),
-                  ),
-                  NavigationRailDestination(
-                    icon: Icon(Icons.people),
-                    label: Text('Users'),
-                  ),
-                  NavigationRailDestination(
-                    icon: Icon(Icons.settings),
-                    label: Text('Settings'),
-                  ),
-                ],
+              Expanded(
+                child: IndexedStack(
+                  index: controller.selectedIndex,
+                  children: const [
+                    DashboardScreen(),
+                    UsersScreen(),
+                    MembershipScreen(),
+                    SettingsScreen(),
+                  ],
+                ),
               ),
-            Expanded(
-              child: IndexedStack(
-                index: controller.selectedIndex,
-                children: const [
-                  DashboardScreen(),
-                  UsersScreen(),
-                  SettingsScreen(),
-                ],
-              ),
-            ),
-          ],
+            ],
+          ),
         ),
         bottomNavigationBar: isSmallScreen
             ? BottomNavigationBar(
@@ -123,6 +143,7 @@ class RootScreen extends GetView<RootController> {
                     label: 'Dashboard',
                   ),
                   BottomNavigationBarItem(icon: Icon(Icons.people), label: 'Users'),
+                  BottomNavigationBarItem(icon: Icon(Icons.card_membership), label: 'Membership'),
                   BottomNavigationBarItem(
                     icon: Icon(Icons.settings),
                     label: 'Settings',

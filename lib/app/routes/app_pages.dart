@@ -1,4 +1,7 @@
 import 'package:get/get.dart';
+import 'package:myapp/app/modules/membership/add_edit_membership_screen.dart';
+import 'package:myapp/app/modules/membership/membership_binding.dart';
+import 'package:myapp/app/modules/membership/membership_screen.dart';
 import '../modules/add_user/add_user_binding.dart';
 import '../modules/add_user/add_user_screen.dart';
 import '../modules/dashboard/dashboard_binding.dart';
@@ -17,7 +20,7 @@ import '../modules/users/users_screen.dart';
 part 'app_routes.dart';
 
 class AppPages {
-  static const initial = Routes.login;
+  static const initial = Routes.root;
 
   static final routes = [
     GetPage(
@@ -54,6 +57,16 @@ class AppPages {
           name: Paths.userDetails,
           page: () => const UserDetailsScreen(),
           binding: UserDetailsBinding(),
+        ),
+        GetPage(
+          name: Paths.membership,
+          page: () => const MembershipScreen(),
+          binding: MembershipBinding(),
+        ),
+        GetPage(
+          name: Paths.addEditMembership,
+          page: () => const AddEditMembershipScreen(),
+          binding: MembershipBinding(),
         ),
       ],
     ),
