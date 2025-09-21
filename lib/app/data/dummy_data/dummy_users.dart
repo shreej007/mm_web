@@ -1,4 +1,3 @@
-
 import 'package:myapp/app/data/models/user_model.dart';
 
 final List<UserModel> dummyUsers = [
@@ -62,9 +61,6 @@ final List<UserModel> dummyUsers = [
       incomePerMonth: 60000.0,
       expectedMaritalStatus: 'Never Married',
     ),
-    profilePhotos: ProfilePhotos(
-      profilePicUrl: null,
-      album: [],
-    ),
+    profilePhotos: ProfilePhotos(profilePicUrl: null, album: []),
   ),
 ];

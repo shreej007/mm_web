@@ -44,7 +44,10 @@ class RootScreen extends GetView<RootController> {
                       ),
                     ),
                     ListTile(
-                      leading: const Icon(Icons.dashboard, color: Color(0xfffa493d)),
+                      leading: const Icon(
+                        Icons.dashboard,
+                        color: Color(0xfffa493d),
+                      ),
                       title: const Text('Dashboard'),
                       onTap: () {
                         controller.setSelectedIndex(0);
@@ -52,7 +55,10 @@ class RootScreen extends GetView<RootController> {
                       },
                     ),
                     ListTile(
-                      leading: const Icon(Icons.people, color: Color(0xfffa493d)),
+                      leading: const Icon(
+                        Icons.people,
+                        color: Color(0xfffa493d),
+                      ),
                       title: const Text('Users'),
                       onTap: () {
                         controller.setSelectedIndex(1);
@@ -60,7 +66,10 @@ class RootScreen extends GetView<RootController> {
                       },
                     ),
                     ListTile(
-                      leading: const Icon(Icons.card_membership, color: Color(0xfffa493d)),
+                      leading: const Icon(
+                        Icons.card_membership,
+                        color: Color(0xfffa493d),
+                      ),
                       title: const Text('Membership'),
                       onTap: () {
                         controller.setSelectedIndex(2);
@@ -68,7 +77,10 @@ class RootScreen extends GetView<RootController> {
                       },
                     ),
                     ListTile(
-                      leading: const Icon(Icons.settings, color: Color(0xfffa493d)),
+                      leading: const Icon(
+                        Icons.settings,
+                        color: Color(0xfffa493d),
+                      ),
                       title: const Text('Settings'),
                       onTap: () {
                         controller.setSelectedIndex(3);
@@ -88,16 +100,18 @@ class RootScreen extends GetView<RootController> {
                   onDestinationSelected: controller.setSelectedIndex,
                   labelType: NavigationRailLabelType.all,
                   backgroundColor: Colors.white,
-                  selectedLabelTextStyle: const TextStyle(color: Color(0xfffa493d)),
+                  selectedLabelTextStyle: const TextStyle(
+                    color: Color(0xfffa493d),
+                  ),
                   unselectedLabelTextStyle: const TextStyle(color: Colors.grey),
-                   leading: Padding(
-                     padding: const EdgeInsets.symmetric(vertical: 8.0),
-                     child: Text(
+                  leading: Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 8.0),
+                    child: Text(
                       'Maratha Mangal',
                       textAlign: TextAlign.center,
                       style: AppTextStyles.headingStyle.copyWith(fontSize: 18),
-                                       ),
-                   ),
+                    ),
+                  ),
                   destinations: const [
                     NavigationRailDestination(
                       icon: Icon(Icons.dashboard),
@@ -142,8 +156,14 @@ class RootScreen extends GetView<RootController> {
                     icon: Icon(Icons.dashboard),
                     label: 'Dashboard',
                   ),
-                  BottomNavigationBarItem(icon: Icon(Icons.people), label: 'Users'),
-                  BottomNavigationBarItem(icon: Icon(Icons.card_membership), label: 'Membership'),
+                  BottomNavigationBarItem(
+                    icon: Icon(Icons.people),
+                    label: 'Users',
+                  ),
+                  BottomNavigationBarItem(
+                    icon: Icon(Icons.card_membership),
+                    label: 'Membership',
+                  ),
                   BottomNavigationBarItem(
                     icon: Icon(Icons.settings),
                     label: 'Settings',

@@ -10,6 +10,9 @@ abstract class Routes {
   static const userDetails = '${Paths.root}${Paths.userDetails}';
   static const membership = '${Paths.root}${Paths.membership}';
   static const addEditMembership = '${Paths.root}${Paths.addEditMembership}';
+  static const membershipPlans = '${Paths.root}${Paths.membershipPlans}';
+  static const addMembershipPlan = '${Paths.root}${Paths.addMembershipPlan}';
+  static const editMembershipPlan = '${Paths.root}${Paths.editMembershipPlan}';
 }
 
 abstract class Paths {
@@ -22,4 +25,7 @@ abstract class Paths {
   static const userDetails = '/user_details';
   static const membership = '/membership';
   static const addEditMembership = '/add_edit_membership';
+  static const membershipPlans = '/membership_plans';
+  static const addMembershipPlan = '/add_membership_plan';
+  static const editMembershipPlan = '/edit_membership_plan';
 }

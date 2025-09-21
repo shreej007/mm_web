@@ -1,240 +1,238 @@
 
 class UserModel {
-  final BasicInfo basicInfo;
-  final PhysicalAttribute physicalAttribute;
-  final HoroscopeDetails horoscopeDetails;
-  final CareerDetails careerDetails;
-  final FamilyDetails familyDetails;
-  final Expectations expectations;
-  final ProfilePhotos profilePhotos;
+  final String? id;
+  final PersonalInfo? personalInfo;
+  final ContactInfo? contactInfo;
+  final Address? address;
+  final EmergencyContact? emergencyContact;
+  final HealthInfo? healthInfo;
+  final Membership? membership;
+  final Profile? profile;
+  final ProfilePhotos? profilePhotos;
 
   UserModel({
-    required this.basicInfo,
-    required this.physicalAttribute,
-    required this.horoscopeDetails,
-    required this.careerDetails,
-    required this.familyDetails,
-    required this.expectations,
-    required this.profilePhotos,
+    this.id,
+    this.personalInfo,
+    this.contactInfo,
+    this.address,
+    this.emergencyContact,
+    this.healthInfo,
+    this.membership,
+    this.profile,
+    this.profilePhotos,
   });
 
   factory UserModel.fromJson(Map<String, dynamic> json) {
     return UserModel(
-      basicInfo: BasicInfo.fromJson(json['basicInfo']),
-      physicalAttribute: PhysicalAttribute.fromJson(json['physicalAttribute']),
-      horoscopeDetails: HoroscopeDetails.fromJson(json['horoscopeDetails']),
-      careerDetails: CareerDetails.fromJson(json['careerDetails']),
-      familyDetails: FamilyDetails.fromJson(json['familyDetails']),
-      expectations: Expectations.fromJson(json['expectations']),
-      profilePhotos: ProfilePhotos.fromJson(json['profilePhotos']),
+      id: json['_id'],
+      personalInfo: json['personalInfo'] != null ? PersonalInfo.fromJson(json['personalInfo']) : null,
+      contactInfo: json['contactInfo'] != null ? ContactInfo.fromJson(json['contactInfo']) : null,
+      address: json['address'] != null ? Address.fromJson(json['address']) : null,
+      emergencyContact: json['emergencyContact'] != null ? EmergencyContact.fromJson(json['emergencyContact']) : null,
+      healthInfo: json['healthInfo'] != null ? HealthInfo.fromJson(json['healthInfo']) : null,
+      membership: json['membership'] != null ? Membership.fromJson(json['membership']) : null,
+      profile: json['profile'] != null ? Profile.fromJson(json['profile']) : null,
+      profilePhotos: json['profilePhotos'] != null ? ProfilePhotos.fromJson(json['profilePhotos']) : null,
     );
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = {};
+    if (personalInfo != null) data['personalInfo'] = personalInfo!.toJson();
+    if (contactInfo != null) data['contactInfo'] = contactInfo!.toJson();
+    if (address != null) data['address'] = address!.toJson();
+    if (emergencyContact != null) data['emergencyContact'] = emergencyContact!.toJson();
+    if (healthInfo != null) data['healthInfo'] = healthInfo!.toJson();
+    if (membership != null) data['membership'] = membership!.toJson();
+    if (profile != null) data['profile'] = profile!.toJson();
+    return data;
   }
 }
 
-class BasicInfo {
+class PersonalInfo {
   String firstName;
-  String middleName;
   String lastName;
+  String dateOfBirth;
   String gender;
-  String birthdate;
-  String subCaste;
-  String email;
-  String mobile;
-  String password;
 
-  BasicInfo({
+  PersonalInfo({
     required this.firstName,
-    required this.middleName,
     required this.lastName,
+    required this.dateOfBirth,
     required this.gender,
-    required this.birthdate,
-    required this.subCaste,
-    required this.email,
-    required this.mobile,
-    required this.password,
   });
 
-  factory BasicInfo.fromJson(Map<String, dynamic> json) {
-    return BasicInfo(
+  factory PersonalInfo.fromJson(Map<String, dynamic> json) {
+    return PersonalInfo(
       firstName: json['firstName'],
-      middleName: json['middleName'],
       lastName: json['lastName'],
+      dateOfBirth: json['dateOfBirth'],
       gender: json['gender'],
-      birthdate: json['birthdate'],
-      subCaste: json['subCaste'],
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'firstName': firstName,
+      'lastName': lastName,
+      'dateOfBirth': dateOfBirth,
+      'gender': gender,
+    };
+  }
+}
+
+class ContactInfo {
+  String email;
+  String phoneNumber;
+
+  ContactInfo({required this.email, required this.phoneNumber});
+
+  factory ContactInfo.fromJson(Map<String, dynamic> json) {
+    return ContactInfo(
       email: json['email'],
-      mobile: json['mobile'],
-      password: json['password'],
+      phoneNumber: json['phoneNumber'],
     );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'email': email,
+      'phoneNumber': phoneNumber,
+    };
   }
 }
 
-class PhysicalAttribute {
-  String height;
-  String weight;
-  String complexion;
-  String bloodGroup;
+class Address {
+  String street;
+  String city;
+  String state;
+  String zipCode;
+  String country;
 
-  PhysicalAttribute({
-    required this.height,
-    required this.weight,
-    required this.complexion,
-    required this.bloodGroup,
+  Address({
+    required this.street,
+    required this.city,
+    required this.state,
+    required this.zipCode,
+    required this.country,
   });
 
-  factory PhysicalAttribute.fromJson(Map<String, dynamic> json) {
-    return PhysicalAttribute(
-      height: json['height'],
-      weight: json['weight'],
-      complexion: json['complexion'],
-      bloodGroup: json['bloodGroup'],
+  factory Address.fromJson(Map<String, dynamic> json) {
+    return Address(
+      street: json['street'],
+      city: json['city'],
+      state: json['state'],
+      zipCode: json['zipCode'],
+      country: json['country'],
     );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'street': street,
+      'city': city,
+      'state': state,
+      'zipCode': zipCode,
+      'country': country,
+    };
   }
 }
 
-class HoroscopeDetails {
-  String birthTime;
-  String birthDistrict;
-  String rashi;
-  String nakshatra;
+class EmergencyContact {
+  String name;
+  String relationship;
+  String phone;
 
-  HoroscopeDetails({
-    required this.birthTime,
-    required this.birthDistrict,
-    required this.rashi,
-    required this.nakshatra,
+  EmergencyContact({
+    required this.name,
+    required this.relationship,
+    required this.phone,
   });
 
-  factory HoroscopeDetails.fromJson(Map<String, dynamic> json) {
-    return HoroscopeDetails(
-      birthTime: json['birthTime'],
-      birthDistrict: json['birthDistrict'],
-      rashi: json['rashi'],
-      nakshatra: json['nakshatra'],
+  factory EmergencyContact.fromJson(Map<String, dynamic> json) {
+    return EmergencyContact(
+      name: json['name'],
+      relationship: json['relationship'],
+      phone: json['phone'],
     );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'name': name,
+      'relationship': relationship,
+      'phone': phone,
+    };
   }
 }
 
-class CareerDetails {
-  String degree;
-  String edufield;
-  String occupationType;
-  String occupationPlace;
-  int personalIncome;
+class HealthInfo {
+  List<String> medicalConditions;
+  List<String> allergies;
+  List<String> medications;
 
-  CareerDetails({
-    required this.degree,
-    required this.edufield,
-    required this.occupationType,
-    required this.occupationPlace,
-    required this.personalIncome,
+  HealthInfo({
+    required this.medicalConditions,
+    required this.allergies,
+    required this.medications,
   });
 
-  factory CareerDetails.fromJson(Map<String, dynamic> json) {
-    return CareerDetails(
-      degree: json['degree'],
-      edufield: json['edufield'],
-      occupationType: json['occupationType'],
-      occupationPlace: json['occupationPlace'],
-      personalIncome: json['personalIncome'],
+  factory HealthInfo.fromJson(Map<String, dynamic> json) {
+    return HealthInfo(
+      medicalConditions: List<String>.from(json['medicalConditions']),
+      allergies: List<String>.from(json['allergies']),
+      medications: List<String>.from(json['medications']),
     );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'medicalConditions': medicalConditions,
+      'allergies': allergies,
+      'medications': medications,
+    };
   }
 }
 
-class FamilyDetails {
-  bool fatherAlive;
-  bool motherAlive;
-  int brothers;
-  int marriedBrothers;
-  int sisters;
-  int marriedSister;
-  String parentNames;
-  String parentOccupation;
-  String parentsResideCity;
-  String nativeDistrict;
-  String nativeTaluka;
-  String familyEstate;
-  List<String> surnamesOfRelatives;
-  String maternalPlaceSurname;
-  String intercasteStatus;
-  String intercasteDetails;
+class Membership {
+  String planId;
+  String startDate;
 
-  FamilyDetails({
-    required this.fatherAlive,
-    required this.motherAlive,
-    required this.brothers,
-    required this.marriedBrothers,
-    required this.sisters,
-    required this.marriedSister,
-    required this.parentNames,
-    required this.parentOccupation,
-    required this.parentsResideCity,
-    required this.nativeDistrict,
-    required this.nativeTaluka,
-    required this.familyEstate,
-    required this.surnamesOfRelatives,
-    required this.maternalPlaceSurname,
-    required this.intercasteStatus,
-    required this.intercasteDetails,
-  });
+  Membership({required this.planId, required this.startDate});
 
-  factory FamilyDetails.fromJson(Map<String, dynamic> json) {
-    return FamilyDetails(
-      fatherAlive: json['fatherAlive'],
-      motherAlive: json['motherAlive'],
-      brothers: json['brothers'],
-      marriedBrothers: json['marriedBrothers'],
-      sisters: json['sisters'],
-      marriedSister: json['marriedSister'],
-      parentNames: json['parentNames'],
-      parentOccupation: json['parentOccupation'],
-      parentsResideCity: json['parentsResideCity'],
-      nativeDistrict: json['nativeDistrict'],
-      nativeTaluka: json['nativeTaluka'],
-      familyEstate: json['familyEstate'],
-      surnamesOfRelatives: List<String>.from(json['surnamesOfRelatives']),
-      maternalPlaceSurname: json['maternalPlaceSurname'],
-      intercasteStatus: json['intercasteStatus'],
-      intercasteDetails: json['intercasteDetails'],
+  factory Membership.fromJson(Map<String, dynamic> json) {
+    return Membership(
+      planId: json['planId'],
+      startDate: json['startDate'],
     );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'planId': planId,
+      'startDate': startDate,
+    };
   }
 }
 
-class Expectations {
-  List<String> preferredCities;
-  bool mangalDosh;
-  String expectedSubCaste;
-  String expectedHeight;
-  int minAgeGap;
-  String expectedEducation;
-  String expectedOccupation;
-  double incomePerMonth;
-  String expectedMaritalStatus;
+class Profile {
+  String profileImageUrl;
+  bool receiveNotifications;
 
-  Expectations({
-    required this.preferredCities,
-    required this.mangalDosh,
-    required this.expectedSubCaste,
-    required this.expectedHeight,
-    required this.minAgeGap,
-    required this.expectedEducation,
-    required this.expectedOccupation,
-    required this.incomePerMonth,
-    required this.expectedMaritalStatus,
-  });
+  Profile({required this.profileImageUrl, required this.receiveNotifications});
 
-  factory Expectations.fromJson(Map<String, dynamic> json) {
-    return Expectations(
-      preferredCities: List<String>.from(json['preferredCities']),
-      mangalDosh: json['mangalDosh'],
-      expectedSubCaste: json['expectedSubCaste'],
-      expectedHeight: json['expectedHeight'],
-      minAgeGap: json['minAgeGap'],
-      expectedEducation: json['expectedEducation'],
-      expectedOccupation: json['expectedOccupation'],
-      incomePerMonth: json['incomePerMonth'],
-      expectedMaritalStatus: json['expectedMaritalStatus'],
+  factory Profile.fromJson(Map<String, dynamic> json) {
+    return Profile(
+      profileImageUrl: json['profileImageUrl'],
+      receiveNotifications: json['receiveNotifications'],
     );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'profileImageUrl': profileImageUrl,
+      'receiveNotifications': receiveNotifications,
+    };
   }
 }
 
@@ -249,5 +247,9 @@ class ProfilePhotos {
       profilePicUrl: json['profilePicUrl'],
       album: List<String>.from(json['album']),
     );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {'profilePicUrl': profilePicUrl, 'album': album};
   }
 }

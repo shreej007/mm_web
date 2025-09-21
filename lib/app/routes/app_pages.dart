@@ -2,6 +2,10 @@ import 'package:get/get.dart';
 import 'package:myapp/app/modules/membership/add_edit_membership_screen.dart';
 import 'package:myapp/app/modules/membership/membership_binding.dart';
 import 'package:myapp/app/modules/membership/membership_screen.dart';
+import 'package:myapp/app/modules/membership_plans/add_membership_plan_binding.dart';
+import 'package:myapp/app/modules/membership_plans/add_membership_plan_screen.dart';
+import 'package:myapp/app/modules/membership_plans/membership_plans_binding.dart';
+import 'package:myapp/app/modules/membership_plans/membership_plans_screen.dart';
 import '../modules/add_user/add_user_binding.dart';
 import '../modules/add_user/add_user_screen.dart';
 import '../modules/dashboard/dashboard_binding.dart';
@@ -12,7 +16,6 @@ import '../modules/root/root_binding.dart';
 import '../modules/root/root_screen.dart';
 import '../modules/settings/settings_binding.dart';
 import '../modules/settings/settings_screen.dart';
-import '../modules/user_details/user_details_binding.dart';
 import '../modules/user_details/user_details_screen.dart';
 import '../modules/users/users_binding.dart';
 import '../modules/users/users_screen.dart';
@@ -56,7 +59,6 @@ class AppPages {
         GetPage(
           name: Paths.userDetails,
           page: () => const UserDetailsScreen(),
-          binding: UserDetailsBinding(),
         ),
         GetPage(
           name: Paths.membership,
@@ -67,6 +69,17 @@ class AppPages {
           name: Paths.addEditMembership,
           page: () => const AddEditMembershipScreen(),
           binding: MembershipBinding(),
+        ),
+        // Routes for Membership Plan Management
+        GetPage(
+          name: Paths.membershipPlans,
+          page: () => const MembershipPlansScreen(),
+          binding: MembershipPlansBinding(),
+        ),
+        GetPage(
+          name: Paths.addMembershipPlan,
+          page: () => const AddMembershipPlanScreen(),
+          binding: AddMembershipPlanBinding(),
         ),
       ],
     ),

@@ -1,86 +1,37 @@
-import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:myapp/app/data/models/membership_plan_model.dart';
-import 'package:uuid/uuid.dart';
+import 'package:myapp/app/data/api_service.dart';
+import 'package:myapp/app/data/models/membership_model.dart';
+import 'package:myapp/app/data/models/user_model.dart';
 
 class MembershipController extends GetxController {
-  final plans = <MembershipPlan>[].obs;
-  final formKey = GlobalKey<FormState>();
-  final nameController = TextEditingController();
-  final priceController = TextEditingController();
-  final durationController = TextEditingController();
+  final ApiService _apiService = ApiService();
+  final user = Rx<UserModel?>(null);
 
-  final Uuid _uuid = const Uuid();
-  String? _editingId;
+  var isLoading = true.obs;
+  var memberships = <Membership>[].obs;
 
   @override
   void onInit() {
     super.onInit();
-    // Initialize with some dummy data
-    plans.addAll([
-      MembershipPlan(id: _uuid.v4(), name: 'Free', price: 0, durationInDays: 365),
-      MembershipPlan(id: _uuid.v4(), name: 'Premium', price: 2000, durationInDays: 90),
-      MembershipPlan(id: _uuid.v4(), name: 'Premium+', price: 5000, durationInDays: 180),
-    ]);
-  }
-
-  void startAdd() {
-    _editingId = null;
-    nameController.clear();
-    priceController.clear();
-    durationController.clear();
-    Get.toNamed('/root/add_edit_membership');
-  }
-
-  void startEdit(MembershipPlan plan) {
-    _editingId = plan.id;
-    nameController.text = plan.name;
-    priceController.text = plan.price.toString();
-    durationController.text = plan.durationInDays.toString();
-    Get.toNamed('/root/add_edit_membership');
-  }
-
-  void savePlan() {
-    if (formKey.currentState!.validate()) {
-      final name = nameController.text;
-      final price = double.parse(priceController.text);
-      final duration = int.parse(durationController.text);
-      final isEditing = _editingId != null;
-
-      if (!isEditing) {
-        // Add new plan
-        final newPlan = MembershipPlan(
-          id: _uuid.v4(),
-          name: name,
-          price: price,
-          durationInDays: duration,
-        );
-        plans.add(newPlan);
-      } else {
-        // Update existing plan
-        final index = plans.indexWhere((p) => p.id == _editingId);
-        if (index != -1) {
-          final updatedPlan = MembershipPlan(
-            id: _editingId!,
-            name: name,
-            price: price,
-            durationInDays: duration,
-          );
-          plans[index] = updatedPlan;
-        }
-      }
-      Get.back();
-      Get.snackbar(
-        'Success',
-        isEditing ? 'Membership plan updated successfully' : 'Membership plan added successfully',
-        snackPosition: SnackPosition.BOTTOM,
-        backgroundColor: Colors.green,
-        colorText: Colors.white,
-      );
+    user.value = Get.arguments as UserModel?;
+    if (user.value != null) {
+      fetchMembershipsForUser(user.value!.id!);
     }
   }
 
-  void deletePlan(String id) {
-    plans.removeWhere((p) => p.id == id);
+  void fetchMembershipsForUser(String userId) async {
+    try {
+      isLoading(true);
+      final response = await _apiService.get('users/$userId/memberships');
+      if (response is List) {
+        memberships.value = response.map((json) => Membership.fromJson(json)).toList();
+      } else {
+        memberships.value = [];
+      }
+    } catch (e) {
+      Get.snackbar('Error', 'Could not fetch memberships.');
+    } finally {
+      isLoading(false);
+    }
   }
 }

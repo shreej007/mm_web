@@ -1,44 +1,65 @@
-# Matrimonial App Blueprint
+# Project Blueprint
 
 ## Overview
 
-This document outlines the features and design of a matrimonial matchmaking application. The app allows users to create detailed profiles, browse other users, and manage their information.
+This document outlines the architecture, features, and design of the Flutter Admin Panel application. The goal is to create a responsive and intuitive interface for managing users and memberships.
 
-**Supported Platforms:** Android, Web
+## Current Features & Design
 
-## Core Features
+*   **UI/UX:**
+    *   Modern design with a gradient-based color scheme.
+    *   Responsive layout for both mobile and web/desktop.
+    *   Dashboard with summary cards for key metrics (Total Users, Brides, Grooms).
+    *   User list with search and filter capabilities.
+    *   Detailed user view.
+    *   Membership plan management screen.
+*   **Architecture:**
+    *   Built with Flutter and the GetX framework for state management and routing.
+    *   Feature-based project structure (e.g., `modules/dashboard`, `modules/users`).
+    *   Currently uses dummy data for all functionality.
 
-*   **User Management:** Create, view, edit, and delete user profiles.
-*   **Detailed User Profiles:** Profiles include sections for basic information, physical attributes, horoscope, career, family, and partner expectations.
-*   **Search and Filter:** Users can search for other users by name or email, and apply advanced filters for gender, sub-caste, and occupation.
-*   **Membership Management:** Administrators can create, read, update, and delete membership plans.
-*   **Dummy Data:** The application is pre-populated with dummy data for development and testing purposes.
+## Plan for Current Request: API Integration
 
-## User Profile Data Structure
+The following steps will be taken to connect the Flutter application to a Node.js/MongoDB backend API.
 
-The `UserModel` is the core data structure for user profiles and includes the following nested classes:
+### 1. **Add HTTP Dependency**
+   - Add the `http` package to `pubspec.yaml` to enable making HTTP requests.
 
-*   `BasicInfo`: First name, last name, gender, birthdate, email, etc.
-*   `PhysicalAttribute`: Height, weight, complexion, etc.
-*   `HoroscopeDetails`: Birth time, rashi, nakshatra, etc.
-*   `CareerDetails`: Education, occupation, income, etc.
-*   `FamilyDetails`: Parent information, siblings, family estate, etc.
-*   `Expectations`: Partner preferences for city, height, education, etc.
-*   `ProfilePhotos`: Profile picture and photo album.
+### 2. **Create a Centralized API Service**
+   - Create a new file: `lib/app/data/api_service.dart`.
+   - This service will manage all network communication.
+   - It will include a placeholder for the base API URL (e.g., `http://your-api-url.com/api`).
+   - It will contain generic methods for `GET`, `POST`, `PUT`, and `DELETE` requests, handling JSON serialization and error responses.
 
-## Membership Plan Data Structure
+### 3. **Update Data Models for Serialization**
+   - Modify `UserModel` (`lib/app/data/models/user_model.dart`) and `MembershipPlanModel` (`lib/app/data/models/membership_plan_model.dart`).
+   - Add `fromJson` and `toJson` factory methods to these models to allow easy conversion between Dart objects and JSON.
 
-The `MembershipPlan` model includes the following fields:
+### 4. **Integrate API with Login (`LoginController`)**
+   - **File:** `lib/app/modules/login/login_controller.dart`
+   - **Action:**
+     - Replace the current dummy authentication logic with an API call.
+     - The `login` method will send the username and password to a `POST /api/auth/login` endpoint.
+     - On success, it will store the received authentication token (e.g., in GetStorage or memory) and navigate to the dashboard.
+     - On failure, it will display an error message to the user.
 
-*   `id`: A unique identifier for the plan.
-*   `name`: The name of the membership plan (e.g., "Premium", "Free").
-*   `price`: The cost of the plan.
-*   `durationInDays`: The duration of the plan in days.
+### 5. **Integrate API with User Management**
+   - **Files:** `UsersController`, `AddUserController`, `UserDetailsController`
+   - **Actions:**
+     - **`UsersController`:**
+       - Fetch the list of users from a `GET /api/users` endpoint instead of `dummy_users`.
+       - The search and filter logic will operate on the data fetched from the API.
+     - **`AddUserController`:**
+       - On saving a new user, send the user data to a `POST /api/users` endpoint.
+     - **`UserDetailsController`:**
+       - Fetch the complete details for a specific user from a `GET /api/users/{id}` endpoint.
 
-## UI/UX Design
+### 6. **Integrate API with Membership Management**
+   - **File:** `MembershipController`
+   - **Action:**
+     - Fetch the list of membership plans from a `GET /api/memberships` endpoint.
+     - Implement the logic in `AddEditMembershipScreen` to create or update plans using `POST /api/memberships` and `PUT /api/memberships/{id}` respectively.
 
-*   **User List:** A clean, card-based layout displays a summary of each user with their full name, email, and mobile number. Actions for viewing, editing, and deleting are readily accessible.
-*   **User Details:** A comprehensive view with expandable sections for each category of the user's profile.
-*   **Add/Edit User Form:** A multi-section form allows for easy input and modification of all user data.
-*   **Membership Plan List:** A `DataTable` displays all membership plans with their name, price, and duration. Actions for editing and deleting plans are included.
-*   **Add/Edit Membership Form:** A simple form for creating and updating membership plans.
+### 7. **Error Handling & State Management**
+   - Update all relevant controllers to manage loading (`isLoading`) and error states during API calls.
+   - The UI will be updated to show loading indicators and user-friendly error messages.

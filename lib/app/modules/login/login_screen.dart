@@ -1,4 +1,3 @@
-
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -82,10 +81,22 @@ class LoginScreen extends GetView<LoginController> {
                           const SizedBox(height: 30),
                           SizedBox(
                             width: double.infinity,
-                            child: ElevatedButton(
-                              onPressed: controller.login,
-                              child: const Text('Login'),
-                            ),
+                            child: Obx(() { // Wrap the button with Obx to listen to isLoading changes.
+                              return ElevatedButton(
+                                // Disable the button when isLoading is true.
+                                onPressed: controller.isLoading.value ? null : controller.login,
+                                child: controller.isLoading.value
+                                    ? const SizedBox(
+                                        height: 20,
+                                        width: 20,
+                                        child: CircularProgressIndicator(
+                                          strokeWidth: 2,
+                                          color: Colors.white,
+                                        ),
+                                      ) // Show a loading spinner.
+                                    : const Text('Login'), // Show the login text.
+                              );
+                            }),
                           ),
                         ],
                       ),

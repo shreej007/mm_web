@@ -26,74 +26,41 @@ class UsersScreen extends GetView<UsersController> {
               style: theme.textTheme.headlineMedium?.copyWith(fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 24),
-            _buildFilterSection(isWeb),
+            _buildFilterSection(context, isWeb),
             const SizedBox(height: 24),
             Expanded(
-              child: Obx(
-                () => Card(
+              child: Obx(() {
+                if (controller.isLoading.value) {
+                  return const Center(child: CircularProgressIndicator());
+                }
+                if (controller.errorMessage.value.isNotEmpty) {
+                  return Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(controller.errorMessage.value, style: const TextStyle(color: Colors.red)),
+                        const SizedBox(height: 8),
+                        ElevatedButton(onPressed: controller.fetchUsers, child: const Text('Retry')),
+                      ],
+                    ),
+                  );
+                }
+                if (controller.filteredUsers.isEmpty) {
+                  return const Center(child: Text('No users found.'));
+                }
+                return Card(
                   clipBehavior: Clip.antiAlias,
                   elevation: 4,
                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                   child: SingleChildScrollView(
-                    scrollDirection: Axis.vertical,
-                    child: DataTable(
-                      columns: const [
-                        DataColumn(label: Text('Name')),
-                        DataColumn(label: Text('Gender')),
-                        DataColumn(label: Text('Birthdate')),
-                        DataColumn(label: Text('Occupation')),
-                        DataColumn(label: Text('Sub-Caste')),
-                        DataColumn(label: Text('Email')),
-                        DataColumn(label: Text('Mobile')),
-                        DataColumn(label: Text('Actions')),
-                      ],
-                      rows: controller.filteredUsers.map((user) {
-                        final fullName =
-                            '${user.basicInfo.firstName} ${user.basicInfo.lastName}';
-                        return DataRow(
-                          cells: [
-                            DataCell(Text(fullName)),
-                            DataCell(Text(user.basicInfo.gender)),
-                            DataCell(Text(user.basicInfo.birthdate)),
-                            DataCell(Text(user.careerDetails.occupationType)),
-                            DataCell(Text(user.basicInfo.subCaste)),
-                            DataCell(Text(user.basicInfo.email)),
-                            DataCell(Text(user.basicInfo.mobile)),
-                            DataCell(
-                              Row(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  IconButton(
-                                    icon: const Icon(Icons.visibility),
-                                    onPressed: () =>
-                                        controller.goToUserDetails(user),
-                                    tooltip: 'View Details',
-                                    color: theme.colorScheme.secondary,
-                                  ),
-                                  IconButton(
-                                    icon: const Icon(Icons.edit),
-                                    onPressed: () =>
-                                        controller.goToEditUser(user),
-                                    tooltip: 'Edit User',
-                                    color: theme.primaryColor,
-                                  ),
-                                  IconButton(
-                                    icon: const Icon(Icons.delete),
-                                    onPressed: () =>
-                                        _showDeleteConfirmation(context, user),
-                                    tooltip: 'Delete User',
-                                    color: theme.colorScheme.error,
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ],
-                        );
-                      }).toList(),
+                    scrollDirection: Axis.horizontal,
+                    child: SingleChildScrollView(
+                      scrollDirection: Axis.vertical,
+                      child: _buildDataTable(theme),
                     ),
                   ),
-                ),
-              ),
+                );
+              }),
             ),
           ],
         ),
@@ -101,7 +68,7 @@ class UsersScreen extends GetView<UsersController> {
     );
   }
 
-  Widget _buildFilterSection(bool isWeb) {
+  Widget _buildFilterSection(BuildContext context, bool isWeb) {
     return Card(
       elevation: 2,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
@@ -110,7 +77,7 @@ class UsersScreen extends GetView<UsersController> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text('Filters', style: Get.textTheme.titleLarge),
+            Text('Filters', style: Theme.of(context).textTheme.titleLarge),
             const SizedBox(height: 16),
             Wrap(
               spacing: 16,
@@ -131,66 +98,35 @@ class UsersScreen extends GetView<UsersController> {
                 SizedBox(
                   width: isWeb ? 150 : double.infinity,
                   child: DropdownButtonFormField<String>(
-                    initialValue: controller.genderFilter.value.isEmpty
-                        ? null
-                        : controller.genderFilter.value,
                     onChanged: controller.setGenderFilter,
-                    decoration: const InputDecoration(
-                      labelText: 'Gender',
-                      border: OutlineInputBorder(),
-                    ),
-                    items: ['Male', 'Female'].map<DropdownMenuItem<String>>((String value) {
-                      return DropdownMenuItem<String>(
-                        value: value,
-                        child: Text(value),
-                      );
-                    }).toList(),
+                    decoration: const InputDecoration(labelText: 'Gender', border: OutlineInputBorder()),
+                    items: const [
+                      DropdownMenuItem(value: '', child: Text('All Genders')),
+                      DropdownMenuItem(value: 'Male', child: Text('Male')),
+                      DropdownMenuItem(value: 'Female', child: Text('Female')),
+                    ],
                   ),
                 ),
-                Obx(
-                  () => SizedBox(
-                    width: isWeb ? 200 : double.infinity,
-                    child: DropdownButtonFormField<String>(
-                      initialValue: controller.subCasteFilter.value.isEmpty
-                          ? null
-                          : controller.subCasteFilter.value,
-                      onChanged: controller.setSubCasteFilter,
-                      decoration: const InputDecoration(
-                        labelText: 'Sub-Caste',
-                        border: OutlineInputBorder(),
+                Obx(() => SizedBox(
+                      width: isWeb ? 200 : double.infinity,
+                      child: DropdownButtonFormField<String>(
+                        onChanged: controller.setSubCasteFilter,
+                        decoration: const InputDecoration(labelText: 'Sub-Caste', border: OutlineInputBorder()),
+                        items: controller.subCasteOptions.map((String value) {
+                          return DropdownMenuItem<String>(value: value, child: Text(value));
+                        }).toList(),
                       ),
-                      items: controller.subCasteOptions
-                          .map<DropdownMenuItem<String>>((String value) {
-                        return DropdownMenuItem<String>(
-                          value: value,
-                          child: Text(value),
-                        );
-                      }).toList(),
-                    ),
-                  ),
-                ),
-                Obx(
-                  () => SizedBox(
-                    width: isWeb ? 200 : double.infinity,
-                    child: DropdownButtonFormField<String>(
-                      initialValue: controller.occupationFilter.value.isEmpty
-                          ? null
-                          : controller.occupationFilter.value,
-                      onChanged: controller.setOccupationFilter,
-                      decoration: const InputDecoration(
-                        labelText: 'Occupation',
-                        border: OutlineInputBorder(),
+                    )),
+                Obx(() => SizedBox(
+                      width: isWeb ? 200 : double.infinity,
+                      child: DropdownButtonFormField<String>(
+                        onChanged: controller.setOccupationFilter,
+                        decoration: const InputDecoration(labelText: 'Occupation', border: OutlineInputBorder()),
+                        items: controller.occupationOptions.map((String value) {
+                          return DropdownMenuItem<String>(value: value, child: Text(value));
+                        }).toList(),
                       ),
-                      items: controller.occupationOptions
-                          .map<DropdownMenuItem<String>>((String value) {
-                        return DropdownMenuItem<String>(
-                          value: value,
-                          child: Text(value),
-                        );
-                      }).toList(),
-                    ),
-                  ),
-                ),
+                    )),
               ],
             ),
             const SizedBox(height: 16),
@@ -208,41 +144,59 @@ class UsersScreen extends GetView<UsersController> {
     );
   }
 
-  void _showDeleteConfirmation(BuildContext context, user) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text('Delete User'),
-          content: Text(
-              'Are you sure you want to delete ${user.basicInfo.firstName} ${user.basicInfo.lastName}?'),
-          actions: <Widget>[
-            TextButton(
-              child: const Text('Cancel'),
-              onPressed: () {
-                Get.back();
-              },
-            ),
-            TextButton(
-              style: TextButton.styleFrom(
-                foregroundColor: Theme.of(context).colorScheme.error,
+  DataTable _buildDataTable(ThemeData theme) {
+    return DataTable(
+      columns: const [
+        DataColumn(label: Text('Name')),
+        DataColumn(label: Text('Gender')),
+        DataColumn(label: Text('Birthdate')),
+        DataColumn(label: Text('Email')),
+        DataColumn(label: Text('Phone')),
+        DataColumn(label: Text('Actions')),
+      ],
+      rows: controller.filteredUsers.map((user) {
+        final fullName = '${user.personalInfo?.firstName ?? ''} ${user.personalInfo?.lastName ?? ''}';
+        return DataRow(
+          cells: [
+            DataCell(Text(fullName)),
+            DataCell(Text(user.personalInfo?.gender ?? 'N/A')),
+            DataCell(Text(user.personalInfo?.dateOfBirth ?? 'N/A')),
+            DataCell(Text(user.contactInfo?.email ?? 'N/A')),
+            DataCell(Text(user.contactInfo?.phoneNumber ?? 'N/A')),
+            DataCell(
+              Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  IconButton(
+                    icon: const Icon(Icons.visibility),
+                    onPressed: () => controller.goToUserDetails(user),
+                    tooltip: 'View Details',
+                    color: theme.colorScheme.secondary,
+                  ),
+                  IconButton(
+                    icon: const Icon(Icons.edit),
+                    onPressed: () => controller.goToEditUser(user),
+                    tooltip: 'Edit User',
+                    color: theme.primaryColor,
+                  ),
+                  IconButton(
+                    icon: const Icon(Icons.power_settings_new),
+                    onPressed: () => controller.inactivateUser(user),
+                    tooltip: 'Inactivate User',
+                    color: theme.colorScheme.error,
+                  ),
+                  IconButton(
+                    icon: const Icon(Icons.card_membership),
+                    onPressed: () => controller.goToMembership(user),
+                    tooltip: 'Manage Membership',
+                    color: Colors.blueAccent,
+                  ),
+                ],
               ),
-              child: const Text('Delete'),
-              onPressed: () {
-                controller.deleteUser(user);
-                Get.back(); // Close the dialog
-                Get.snackbar(
-                  'Success',
-                  'User deleted successfully',
-                  snackPosition: SnackPosition.BOTTOM,
-                  backgroundColor: Colors.green,
-                  colorText: Colors.white,
-                );
-              },
             ),
           ],
         );
-      },
+      }).toList(),
     );
   }
 }

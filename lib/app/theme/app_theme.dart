@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -8,7 +7,10 @@ class AppTheme {
 
   static final TextTheme _lightTextTheme = GoogleFonts.latoTextTheme(
     const TextTheme(
-      headlineMedium: TextStyle(fontWeight: FontWeight.bold, color: _primaryColor),
+      headlineMedium: TextStyle(
+        fontWeight: FontWeight.bold,
+        color: _primaryColor,
+      ),
       titleLarge: TextStyle(fontWeight: FontWeight.bold, color: Colors.black87),
       bodyMedium: TextStyle(color: Colors.black54),
     ),
@@ -16,7 +18,10 @@ class AppTheme {
 
   static final TextTheme _darkTextTheme = GoogleFonts.latoTextTheme(
     const TextTheme(
-      headlineMedium: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
+      headlineMedium: TextStyle(
+        fontWeight: FontWeight.bold,
+        color: Colors.white,
+      ),
       titleLarge: TextStyle(fontWeight: FontWeight.bold, color: Colors.white70),
       bodyMedium: TextStyle(color: Colors.white60),
     ),
@@ -36,7 +41,10 @@ class AppTheme {
       appBarTheme: AppBarTheme(
         backgroundColor: _primaryColor,
         foregroundColor: Colors.white,
-        titleTextStyle: GoogleFonts.lato(fontSize: 20, fontWeight: FontWeight.bold),
+        titleTextStyle: GoogleFonts.lato(
+          fontSize: 20,
+          fontWeight: FontWeight.bold,
+        ),
       ),
       inputDecorationTheme: InputDecorationTheme(
         border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
@@ -60,10 +68,15 @@ class AppTheme {
         foregroundColor: Colors.white,
       ),
       dataTableTheme: DataTableThemeData(
-        headingRowColor: WidgetStateProperty.all(_primaryColor.withAlpha(26)), // 10% opacity
+        headingRowColor: WidgetStateProperty.all(
+          _primaryColor.withAlpha(26),
+        ), // 10% opacity
         dataRowColor: WidgetStateProperty.all(Colors.white),
         dividerThickness: 0.0,
-        headingTextStyle: const TextStyle(fontWeight: FontWeight.bold, color: _primaryColor),
+        headingTextStyle: const TextStyle(
+          fontWeight: FontWeight.bold,
+          color: _primaryColor,
+        ),
       ),
       cardTheme: CardThemeData(
         elevation: 1.0,
@@ -87,7 +100,10 @@ class AppTheme {
       appBarTheme: AppBarTheme(
         backgroundColor: Colors.grey[900],
         foregroundColor: Colors.white,
-        titleTextStyle: GoogleFonts.lato(fontSize: 20, fontWeight: FontWeight.bold),
+        titleTextStyle: GoogleFonts.lato(
+          fontSize: 20,
+          fontWeight: FontWeight.bold,
+        ),
       ),
       inputDecorationTheme: InputDecorationTheme(
         border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
@@ -114,7 +130,10 @@ class AppTheme {
         headingRowColor: WidgetStateProperty.all(Colors.grey[800]),
         dataRowColor: WidgetStateProperty.all(Colors.grey[850]),
         dividerThickness: 0.0,
-        headingTextStyle: const TextStyle(fontWeight: FontWeight.bold, color: Colors.white70),
+        headingTextStyle: const TextStyle(
+          fontWeight: FontWeight.bold,
+          color: Colors.white70,
+        ),
       ),
       cardTheme: CardThemeData(
         elevation: 1.0,

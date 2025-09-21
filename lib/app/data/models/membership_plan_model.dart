@@ -1,13 +1,17 @@
-class MembershipPlan {
-  final String id;
-  final String name;
-  final double price;
-  final int durationInDays;
+import 'package:freezed_annotation/freezed_annotation.dart';
 
-  MembershipPlan({
-    required this.id,
-    required this.name,
-    required this.price,
-    required this.durationInDays,
-  });
+part 'membership_plan_model.freezed.dart';
+part 'membership_plan_model.g.dart';
+
+@freezed
+class MembershipPlanModel with _$MembershipPlanModel {
+  const factory MembershipPlanModel({
+    required String id,
+    required String name,
+    required double price,
+    required int durationDays,
+    required List<String> features,
+  }) = _MembershipPlanModel;
+
+  factory MembershipPlanModel.fromJson(Map<String, dynamic> json) => _$MembershipPlanModelFromJson(json);
 }
