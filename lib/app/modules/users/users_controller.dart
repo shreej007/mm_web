@@ -8,20 +8,17 @@ import 'package:myapp/app/routes/app_pages.dart';
 class UsersController extends GetxController {
   final ApiService _apiService = ApiService();
 
-  // --- State Management ---
   var isLoading = true.obs;
   var errorMessage = ''.obs;
   final _users = <UserModel>[].obs;
   final filteredUsers = <UserModel>[].obs;
 
-  // --- Filter and Search State ---
   final genderFilter = ''.obs;
   final subCasteFilter = ''.obs;
   final occupationFilter = ''.obs;
   final searchQuery = ''.obs;
   final searchController = TextEditingController();
 
-  // --- Dropdown Options ---
   final subCasteOptions = <String>['All'].obs;
   final occupationOptions = <String>['All'].obs;
 
@@ -60,33 +57,42 @@ class UsersController extends GetxController {
   }
 
   void _populateFilterOptions() {
-    subCasteOptions.assignAll(['All', ..._users.map((u) => u.personalInfo?.gender ?? 'N/A').toSet()]);
-    occupationOptions.assignAll(['All', ..._users.map((u) => u.membership?.planId ?? 'N/A').toSet()]);
+    if (_users.isNotEmpty) {
+      subCasteOptions.assignAll(['All', ..._users.map((u) => u.basicInfo?.subCaste ?? 'N/A').toSet()]);
+      occupationOptions.assignAll(['All', ..._users.map((u) => u.careerDetails?.occupationType ?? 'N/A').toSet()]);
+    }
   }
 
   void _applyFilters() {
     List<UserModel> tempUsers = List<UserModel>.from(_users);
+    final query = searchQuery.value.toLowerCase();
 
-    if (searchQuery.value.isNotEmpty) {
-      tempUsers = tempUsers.where((user) =>
-          (user.personalInfo?.firstName.toLowerCase().contains(searchQuery.value) ?? false) ||
-          (user.personalInfo?.lastName.toLowerCase().contains(searchQuery.value) ?? false) ||
-          (user.contactInfo?.email.toLowerCase().contains(searchQuery.value) ?? false)).toList();
+    if (query.isNotEmpty) {
+      tempUsers = tempUsers.where((user) {
+        final basicInfo = user.basicInfo;
+        if (basicInfo == null) return false;
+
+        return (basicInfo.firstName?.toLowerCase().contains(query) ?? false) ||
+            (basicInfo.lastName?.toLowerCase().contains(query) ?? false) ||
+            (basicInfo.email.toLowerCase().contains(query));
+      }).toList();
     }
+
     if (genderFilter.value.isNotEmpty) {
-      tempUsers = tempUsers.where((user) => user.personalInfo?.gender.toLowerCase() == genderFilter.value.toLowerCase()).toList();
+      final gender = genderFilter.value.toLowerCase();
+      tempUsers = tempUsers.where((user) => user.basicInfo?.gender?.toLowerCase() == gender).toList();
     }
     if (subCasteFilter.value.isNotEmpty) {
-      tempUsers = tempUsers.where((user) => user.personalInfo?.gender == subCasteFilter.value).toList();
+      tempUsers = tempUsers.where((user) => user.basicInfo?.subCaste == subCasteFilter.value).toList();
     }
     if (occupationFilter.value.isNotEmpty) {
-      tempUsers = tempUsers.where((user) => user.membership?.planId == occupationFilter.value).toList();
+      tempUsers = tempUsers.where((user) => user.careerDetails?.occupationType == occupationFilter.value).toList();
     }
 
     filteredUsers.assignAll(tempUsers);
   }
 
-  void setSearchQuery(String query) => searchQuery.value = query.toLowerCase();
+  void setSearchQuery(String query) => searchQuery.value = query;
   void setGenderFilter(String? gender) => genderFilter.value = gender ?? '';
   void setSubCasteFilter(String? subCaste) => subCasteFilter.value = (subCaste == 'All' || subCaste == null) ? '' : subCaste;
   void setOccupationFilter(String? occupation) => occupationFilter.value = (occupation == 'All' || occupation == null) ? '' : occupation;
@@ -127,7 +133,7 @@ class UsersController extends GetxController {
     Get.dialog(
       AlertDialog(
         title: const Text('Inactivate User'),
-        content: Text('Are you sure you want to inactivate ${user.personalInfo?.firstName} ${user.personalInfo?.lastName}?'),
+        content: Text('Are you sure you want to inactivate ${user.basicInfo?.firstName} ${user.basicInfo?.lastName}?'),
         actions: [
           TextButton(onPressed: () => Get.back(), child: const Text('Cancel')),
           ElevatedButton(
@@ -135,7 +141,7 @@ class UsersController extends GetxController {
               Get.back(); // Close the dialog
               isLoading(true);
               try {
-                await _apiService.patch(ApiUrls.inactivateUser(user.id!), body: {'reason': 'Inactivated by admin'});
+                await _apiService.post(ApiUrls.inactivateUser(user.id!), body: {'reason': 'Inactivated by admin'});
                 // Optionally, refresh the user list to reflect the change
                 fetchUsers();
                 Get.snackbar('Success', 'User inactivated successfully.');

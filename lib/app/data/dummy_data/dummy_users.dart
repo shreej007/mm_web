@@ -1,66 +1,78 @@
 import 'package:myapp/app/data/models/user_model.dart';
+import 'package:myapp/app/data/models/basic_info_model.dart';
+import 'package:myapp/app/data/models/physical_attribute_model.dart';
+import 'package:myapp/app/data/models/horoscope_details_model.dart';
+import 'package:myapp/app/data/models/career_details_model.dart';
+import 'package:myapp/app/data/models/family_details_model.dart';
+import 'package:myapp/app/data/models/expectations_model.dart';
+import 'package:myapp/app/data/models/profile_photos_model.dart';
 
 final List<UserModel> dummyUsers = [
   UserModel(
-    basicInfo: BasicInfo(
+    id: '1',
+    basicInfo: const BasicInfo(
       firstName: 'Rushi',
-      middleName: 'Vishwanath',
+      middleName: 'V',
       lastName: 'Patil',
       gender: 'Male',
       birthdate: '1995-06-15',
-      subCaste: '96 Kuli Maratha',
-      email: 'rushi@example.com',
+      subCaste: 'Maratha',
+      email: 'rushi.patil@example.com',
       mobile: '9876543210',
-      password: 'password123',
     ),
-    physicalAttribute: PhysicalAttribute(
-      height: '5\'9"',
-      weight: '72kg',
+    physicalAttribute: const PhysicalAttribute(
+      height: '5\'10"',
+      weight: '75kg',
       complexion: 'Fair',
       bloodGroup: 'O+',
     ),
-    horoscopeDetails: HoroscopeDetails(
-      birthTime: '10:45 AM',
-      birthDistrict: 'Pune, Maharashtra',
-      rashi: 'Vrushabh',
-      nakshatra: 'Rohini',
+    horoscopeDetails: const HoroscopeDetails(
+      birthTime: '10:30 AM',
+      birthDistrict: 'Pune',
+      rashi: 'Simha',
+      nakshatra: 'Magha',
     ),
-    careerDetails: CareerDetails(
-      degree: 'B.E.',
-      edufield: 'Computer Science',
-      occupationType: 'Software Developer',
+    careerDetails: const CareerDetails(
+      degree: 'B.E. Computer',
+      edufield: 'Engineering',
+      occupationType: 'Salaried',
       occupationPlace: 'Pune',
-      personalIncome: 12000,
+      personalIncome: 1200000,
     ),
-    familyDetails: FamilyDetails(
+    familyDetails: const FamilyDetails(
       fatherAlive: true,
       motherAlive: true,
-      brothers: 0,
+      brothers: 1,
       marriedBrothers: 0,
-      sisters: 2,
+      sisters: 1,
       marriedSister: 1,
-      parentNames: 'Rahul Kulkarni & Shalini Kulkarni',
-      parentOccupation: 'Government Service',
-      parentsResideCity: 'Mumbai',
+      parentNames: 'Mr. & Mrs. Patil',
+      parentOccupation: 'Farmer',
+      parentsResideCity: 'Pune',
       nativeDistrict: 'Satara',
       nativeTaluka: 'Karad',
-      familyEstate: 'Flat in Mumbai + ancestral home',
-      surnamesOfRelatives: ['Joshi', 'Kulkarni'],
-      maternalPlaceSurname: 'Deshpande',
-      intercasteStatus: 'Yes',
-      intercasteDetails: 'Maratha-Brahmin',
+      familyEstate: 'House and Farm',
+      surnamesOfRelatives: ['Jadhav', 'More'],
+      maternalPlaceSurname: 'Pawar',
+      intercasteStatus: 'No',
     ),
-    expectations: Expectations(
-      preferredCities: ['Mumbai', 'Pune', 'Bangalore'],
-      mangalDosh: true,
+    expectations: const Expectations(
+      preferredCities: ['Pune', 'Mumbai'],
+      mangalDosh: false,
       expectedSubCaste: 'Maratha',
-      expectedHeight: '5\'6" - 6\'0"',
+      expectedHeight: '5\'4" - 5\'8"',
       minAgeGap: 3,
-      expectedEducation: 'MBA/Engineer',
-      expectedOccupation: 'Corporate Professional',
-      incomePerMonth: 60000.0,
+      expectedEducation: 'Graduate',
+      expectedOccupation: 'Salaried',
+      incomePerMonth: 50000,
       expectedMaritalStatus: 'Never Married',
     ),
-    profilePhotos: ProfilePhotos(profilePicUrl: null, album: []),
+    profilePhotos: const ProfilePhotos(
+      profilePicUrl: 'https://via.placeholder.com/150',
+      album: [
+        'https://via.placeholder.com/300',
+        'https://via.placeholder.com/300'
+      ],
+    ),
   ),
 ];

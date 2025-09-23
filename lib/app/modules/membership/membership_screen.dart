@@ -10,7 +10,7 @@ class MembershipScreen extends GetView<MembershipController> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Membership for ${controller.user.value?.basicInfo.firstName ?? ''}'),
+        title: Text('Membership for ${controller.user.value?.basicInfo?.firstName ?? ''}'),
         actions: [
           IconButton(
             icon: const Icon(Icons.add),

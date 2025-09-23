@@ -1,180 +1,204 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:myapp/app/data/models/user_model.dart';
-import 'package:myapp/app/modules/users/users_controller.dart'; // Changed from UserDetailsController
+import 'package:myapp/app/modules/user_details/user_details_controller.dart';
 
-class UserDetailsScreen extends StatelessWidget { // Changed to StatelessWidget
+class UserDetailsScreen extends StatelessWidget {
   const UserDetailsScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final UsersController controller = Get.find(); // Find the existing UsersController
-    final UserModel user = Get.arguments as UserModel; // Get user from arguments
+    return GetBuilder<UserDetailsController>(
+      init: UserDetailsController(),
+      builder: (controller) {
+        return Scaffold(
+          appBar: AppBar(
+            title: Obx(() {
+              final user = controller.user.value;
+              return Text(user != null
+                  ? '${user.basicInfo?.firstName} ${user.basicInfo?.lastName}'
+                  : 'User Details');
+            }),
+            elevation: 2,
+          ),
+          body: controller.obx(
+            (state) => _buildUserDetails(context, state!),
+            onLoading: const Center(child: CircularProgressIndicator()),
+            onError: (error) => Center(child: Text('Error: $error')),
+            onEmpty: const Center(child: Text('No user data found.')),
+          ),
+        );
+      },
+    );
+  }
 
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('${user.personalInfo?.firstName ?? ''} ${user.personalInfo?.lastName ?? ''}'),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.edit),
-            onPressed: () => controller.goToEditUser(user), // Use the existing method
-            tooltip: 'Edit User',
+  Widget _buildUserDetails(BuildContext context, UserModel user) {
+    return SingleChildScrollView(
+      padding: const EdgeInsets.all(16.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          _buildProfileHeader(context, user),
+          const SizedBox(height: 24),
+          _buildSection(context, 'Basic Information', _buildBasicInfo(user)),
+          _buildSection(context, 'Physical Attributes', _buildPhysicalAttributes(user)),
+          _buildSection(context, 'Horoscope Details', _buildHoroscopeDetails(user)),
+          _buildSection(context, 'Career Details', _buildCareerDetails(user)),
+          _buildSection(context, 'Family Details', _buildFamilyDetails(user)),
+          _buildSection(context, 'Expectations', _buildExpectations(user)),
+          _buildSection(context, 'Profile Photos', _buildProfilePhotos(user)),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildProfileHeader(BuildContext context, UserModel user) {
+    return Center(
+      child: Column(
+        children: [
+          CircleAvatar(
+            radius: 50,
+            backgroundImage: user.profilePhotos?.profilePicUrl != null &&
+                    user.profilePhotos!.profilePicUrl!.isNotEmpty
+                ? NetworkImage(user.profilePhotos!.profilePicUrl!)
+                : null,
+            child: user.profilePhotos?.profilePicUrl == null ||
+                    user.profilePhotos!.profilePicUrl!.isEmpty
+                ? const Icon(Icons.person, size: 50)
+                : null,
+          ),
+          const SizedBox(height: 12),
+          Text(
+            '${user.basicInfo?.firstName ?? ''} ${user.basicInfo?.lastName ?? ''}',
+            style: Theme.of(context).textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.bold),
+          ),
+          const SizedBox(height: 4),
+          Text(
+            user.basicInfo?.email ?? 'No email provided',
+            style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: Colors.grey[600]),
           ),
         ],
       ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(24.0),
+    );
+  }
+
+  Widget _buildSection(BuildContext context, String title, Widget content) {
+    return Card(
+      margin: const EdgeInsets.symmetric(vertical: 8.0),
+      elevation: 2,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+      child: Container(
+        padding: const EdgeInsets.all(16.0),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            _buildProfileHeader(context, user),
-            const SizedBox(height: 32),
-            if (user.personalInfo != null) _buildSectionCard(context, title: 'Personal Information', child: _buildPersonalInfo(user.personalInfo!)),
-            if (user.contactInfo != null) _buildSectionCard(context, title: 'Contact Information', child: _buildContactInfo(user.contactInfo!)),
-            if (user.address != null) _buildSectionCard(context, title: 'Address', child: _buildAddress(user.address!)),
-            if (user.emergencyContact != null) _buildSectionCard(context, title: 'Emergency Contact', child: _buildEmergencyContact(user.emergencyContact!)),
-            if (user.healthInfo != null) _buildSectionCard(context, title: 'Health Information', child: _buildHealthInfo(user.healthInfo!)),
-            if (user.membership != null) _buildSectionCard(context, title: 'Membership', child: _buildMembership(user.membership!)),
-            if (user.profile != null) _buildSectionCard(context, title: 'Profile & Settings', child: _buildProfile(user.profile!)),
-            if (user.profilePhotos != null) _buildSectionCard(context, title: 'Profile Photos', child: _buildProfilePhotos(user.profilePhotos!)),
+            Text(
+              title,
+              style: Theme.of(context).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.w600),
+            ),
+            const Divider(height: 20, thickness: 1),
+            content,
           ],
         ),
       ),
     );
   }
 
-  Widget _buildProfileHeader(BuildContext context, UserModel user) {
-    final theme = Theme.of(context);
-    return Column(
-      children: [
-        CircleAvatar(
-          radius: 60,
-          backgroundImage: user.profile?.profileImageUrl != null && user.profile!.profileImageUrl.isNotEmpty
-              ? NetworkImage(user.profile!.profileImageUrl)
-              : null,
-          child: user.profile?.profileImageUrl == null || user.profile!.profileImageUrl.isEmpty
-              ? Text(
-                  user.personalInfo?.firstName[0].toUpperCase() ?? 'U',
-                  style: TextStyle(fontSize: 60, fontWeight: FontWeight.bold, color: theme.colorScheme.primary),
-                )
-              : null,
-        ),
-        const SizedBox(height: 16),
-        Text(
-          '${user.personalInfo?.firstName ?? ''} ${user.personalInfo?.lastName ?? ''}',
-          style: theme.textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.bold),
-        ),
-        const SizedBox(height: 4),
-        Text(
-          user.contactInfo?.email ?? 'No email provided',
-          style: theme.textTheme.bodyLarge?.copyWith(color: Colors.grey[600]),
-        ),
-      ],
-    );
-  }
-
-    Widget _buildSectionCard(BuildContext context, {required String title, required Widget child}) {
-    final theme = Theme.of(context);
-    return Card(
-      elevation: 2,
-      margin: const EdgeInsets.only(bottom: 16),
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-      child: ExpansionTile(
-        initiallyExpanded: true,
-        title: Text(title, style: theme.textTheme.titleLarge?.copyWith(color: theme.colorScheme.primary)),
-        children: [Padding(padding: const EdgeInsets.all(16), child: child)],
-      ),
-    );
-  }
-
-  Widget _buildInfoRow(String label, String value) {
+  Widget _buildDetailRow(String label, String? value) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8.0),
+      padding: const EdgeInsets.symmetric(vertical: 6.0),
       child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          SizedBox(width: 140, child: Text(label, style: const TextStyle(fontWeight: FontWeight.bold))),
-          Expanded(child: Text(value)),
+          Text(label, style: const TextStyle(fontWeight: FontWeight.w500)),
+          Text(value ?? 'N/A'),
         ],
       ),
     );
   }
 
-  Widget _buildPersonalInfo(PersonalInfo info) {
+  Widget _buildBasicInfo(UserModel user) {
+    final basicInfo = user.basicInfo;
     return Column(
       children: [
-        _buildInfoRow('First Name', info.firstName),
-        _buildInfoRow('Last Name', info.lastName),
-        _buildInfoRow('Date of Birth', info.dateOfBirth),
-        _buildInfoRow('Gender', info.gender),
+        _buildDetailRow('Gender', basicInfo?.gender),
+        _buildDetailRow('Date of Birth', basicInfo?.birthdate?.toString().split(' ')[0]),
+        _buildDetailRow('Sub-caste', basicInfo?.subCaste),
       ],
     );
   }
 
-  Widget _buildContactInfo(ContactInfo info) {
+  Widget _buildPhysicalAttributes(UserModel user) {
+    final physical = user.physicalAttribute;
+    return _buildDetailRow('Height', physical?.height);
+  }
+
+  Widget _buildHoroscopeDetails(UserModel user) {
+    final horoscope = user.horoscopeDetails;
     return Column(
       children: [
-        _buildInfoRow('Email', info.email),
-        _buildInfoRow('Phone Number', info.phoneNumber),
+        _buildDetailRow('Rashi', horoscope?.rashi),
+        _buildDetailRow('Nakshatra', horoscope?.nakshatra),
       ],
     );
   }
 
-  Widget _buildAddress(Address info) {
+  Widget _buildCareerDetails(UserModel user) {
+    final career = user.careerDetails;
     return Column(
       children: [
-        _buildInfoRow('Street', info.street),
-        _buildInfoRow('City', info.city),
-        _buildInfoRow('State', info.state),
-        _buildInfoRow('Zip Code', info.zipCode),
-        _buildInfoRow('Country', info.country),
+        _buildDetailRow('Occupation Type', career?.occupationType),
+        _buildDetailRow('Annual Income', career?.personalIncome?.toString()),
       ],
     );
   }
 
-  Widget _buildEmergencyContact(EmergencyContact info) {
+  Widget _buildFamilyDetails(UserModel user) {
+    final family = user.familyDetails;
     return Column(
       children: [
-        _buildInfoRow('Name', info.name),
-        _buildInfoRow('Relationship', info.relationship),
-        _buildInfoRow('Phone', info.phone),
+        _buildDetailRow('Father\'s Name', family?.parentNames),
+        _buildDetailRow('Number of Siblings', '${(family?.brothers ?? 0) + (family?.sisters ?? 0)}'),
+        _buildDetailRow('Family Type', family?.nativeDistrict),
       ],
     );
   }
 
-  Widget _buildHealthInfo(HealthInfo info) {
+  Widget _buildExpectations(UserModel user) {
+    final expectations = user.expectations;
     return Column(
       children: [
-        _buildInfoRow('Medical Conditions', info.medicalConditions.join(', ')),
-        _buildInfoRow('Allergies', info.allergies.join(', ')),
-        _buildInfoRow('Medications', info.medications.join(', ')),
+        _buildDetailRow('Min Height', expectations?.expectedHeight),
+        _buildDetailRow('Max Age Difference', expectations?.minAgeGap?.toString()),
+        _buildDetailRow('Expected Occupation', expectations?.expectedOccupation),
       ],
     );
   }
 
-  Widget _buildMembership(Membership info) {
-    return Column(
-      children: [
-        _buildInfoRow('Plan ID', info.planId),
-        _buildInfoRow('Start Date', info.startDate),
-      ],
-    );
-  }
+  Widget _buildProfilePhotos(UserModel user) {
+    final photos = user.profilePhotos?.album;
+    if (photos == null || photos.isEmpty) {
+      return const Text('No additional photos available.');
+    }
 
-  Widget _buildProfile(Profile info) {
-    return Column(
-      children: [
-        _buildInfoRow('Receive Notifications', info.receiveNotifications ? 'Yes' : 'No'),
-      ],
-    );
-  }
-
-  Widget _buildProfilePhotos(ProfilePhotos photos) {
-    return photos.album.isEmpty
-        ? const Text('No photos uploaded.')
-        : Wrap(
-            spacing: 8,
-            runSpacing: 8,
-            children: photos.album.map((url) => Image.network(url, width: 100, height: 100, fit: BoxFit.cover)).toList(),
+    return SizedBox(
+      height: 120,
+      child: ListView.builder(
+        scrollDirection: Axis.horizontal,
+        itemCount: photos.length,
+        itemBuilder: (context, index) {
+          return Card(
+            clipBehavior: Clip.antiAlias,
+            child: Image.network(
+              photos[index],
+              width: 100,
+              height: 120,
+              fit: BoxFit.cover,
+              errorBuilder: (context, error, stackTrace) => const Icon(Icons.error, size: 40),
+            ),
           );
+        },
+      ),
+    );
   }
 }

@@ -10,8 +10,8 @@ class AddEditMembershipController extends GetxController {
 
   UserModel? user;
   var isLoading = false.obs;
-  var plans = <MembershipPlan>[].obs;
-  var selectedPlan = Rx<MembershipPlan?>(null);
+  var plans = <MembershipPlanModel>[].obs;
+  var selectedPlan = Rx<MembershipPlanModel?>(null);
   var startDate = Rx<DateTime?>(null);
 
   @override
@@ -25,14 +25,14 @@ class AddEditMembershipController extends GetxController {
     try {
       final response = await _apiService.get('membership-plans');
       if (response is List) {
-        plans.value = response.map((json) => MembershipPlan.fromJson(json)).toList();
+        plans.value = response.map((json) => MembershipPlanModel.fromJson(json)).toList();
       }
     } catch (e) {
       Get.snackbar('Error', 'Could not fetch membership plans.');
     }
   }
 
-  void onPlanSelected(MembershipPlan? plan) {
+  void onPlanSelected(MembershipPlanModel? plan) {
     selectedPlan.value = plan;
   }
 

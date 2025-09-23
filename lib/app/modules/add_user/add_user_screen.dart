@@ -41,13 +41,13 @@ class AddUserScreen extends GetView<AddUserController> {
             key: controller.formKey,
             child: Column(
               children: [
-                _buildSection(context, title: '1. Personal Information', child: _buildPersonalInfoForm()),
-                _buildSection(context, title: '2. Contact Information', child: _buildContactInfoForm()),
-                _buildSection(context, title: '3. Address', child: _buildAddressForm()),
-                _buildSection(context, title: '4. Emergency Contact', child: _buildEmergencyContactForm()),
-                _buildSection(context, title: '5. Health Information', child: _buildHealthInfoForm()),
-                _buildSection(context, title: '6. Membership Details', child: _buildMembershipForm()),
-                _buildSection(context, title: '7. Profile & Settings', child: _buildProfileForm()),
+                _buildSection(context, title: '1. Basic Information', child: _buildBasicInfoForm()),
+                _buildSection(context, title: '2. Physical Attributes', child: _buildPhysicalAttributeForm()),
+                _buildSection(context, title: '3. Horoscope Details', child: _buildHoroscopeDetailsForm()),
+                _buildSection(context, title: '4. Career Details', child: _buildCareerDetailsForm()),
+                _buildSection(context, title: '5. Family Details', child: _buildFamilyDetailsForm()),
+                _buildSection(context, title: '6. Expectations', child: _buildExpectationsForm()),
+                _buildSection(context, title: '7. Profile Photos', child: _buildProfilePhotosForm()),
               ],
             ),
           ),
@@ -123,61 +123,86 @@ class AddUserScreen extends GetView<AddUserController> {
     return Wrap(spacing: 16.0, runSpacing: 16.0, children: children);
   }
 
-  // --- Form Section Builders ---
-
-  Widget _buildPersonalInfoForm() {
+  Widget _buildBasicInfoForm() {
     return _buildFormWrapper([
       _buildTextFormField(controller: controller.firstNameController, label: 'First Name', icon: Icons.person_outline),
+      _buildTextFormField(controller: controller.middleNameController, label: 'Middle Name', icon: Icons.person_outline, isRequired: false),
       _buildTextFormField(controller: controller.lastNameController, label: 'Last Name', icon: Icons.person_outline),
-      _buildTextFormField(controller: controller.dateOfBirthController, label: 'Birthdate (YYYY-MM-DD)', icon: Icons.calendar_today),
       _buildTextFormField(controller: controller.genderController, label: 'Gender', icon: Icons.wc),
-    ]);
-  }
-
-  Widget _buildContactInfoForm() {
-    return _buildFormWrapper([
+      _buildTextFormField(controller: controller.birthdateController, label: 'Birthdate (YYYY-MM-DD)', icon: Icons.calendar_today),
+      _buildTextFormField(controller: controller.subCasteController, label: 'Sub-Caste', icon: Icons.people_outline, isRequired: false),
       _buildTextFormField(controller: controller.emailController, label: 'Email', icon: Icons.email_outlined),
-      _buildTextFormField(controller: controller.phoneNumberController, label: 'Phone Number', icon: Icons.phone_iphone),
+      _buildTextFormField(controller: controller.mobileController, label: 'Mobile', icon: Icons.phone_iphone),
     ]);
   }
 
-  Widget _buildAddressForm() {
+  Widget _buildPhysicalAttributeForm() {
     return _buildFormWrapper([
-      _buildTextFormField(controller: controller.streetController, label: 'Street', icon: Icons.add_road, isRequired: false),
-      _buildTextFormField(controller: controller.cityController, label: 'City', icon: Icons.location_city, isRequired: false),
-      _buildTextFormField(controller: controller.stateController, label: 'State', icon: Icons.map_outlined, isRequired: false),
-      _buildTextFormField(controller: controller.zipCodeController, label: 'Zip Code', icon: Icons.local_post_office_outlined, isRequired: false),
-      _buildTextFormField(controller: controller.countryController, label: 'Country', icon: Icons.public_outlined, isRequired: false),
+      _buildTextFormField(controller: controller.heightController, label: 'Height', icon: Icons.height, isRequired: false),
+      _buildTextFormField(controller: controller.weightController, label: 'Weight', icon: Icons.monitor_weight_outlined, isRequired: false),
+      _buildTextFormField(controller: controller.complexionController, label: 'Complexion', icon: Icons.face, isRequired: false),
+      _buildTextFormField(controller: controller.bloodGroupController, label: 'Blood Group', icon: Icons.bloodtype_outlined, isRequired: false),
     ]);
   }
 
-  Widget _buildEmergencyContactForm() {
+  Widget _buildHoroscopeDetailsForm() {
     return _buildFormWrapper([
-      _buildTextFormField(controller: controller.emergencyContactNameController, label: 'Emergency Contact Name', icon: Icons.person_pin, isRequired: false),
-      _buildTextFormField(controller: controller.emergencyContactRelationshipController, label: 'Relationship', icon: Icons.people_outline, isRequired: false),
-      _buildTextFormField(controller: controller.emergencyContactPhoneController, label: 'Emergency Phone', icon: Icons.phone_in_talk_outlined, isRequired: false),
+      _buildTextFormField(controller: controller.birthTimeController, label: 'Birth Time', icon: Icons.access_time, isRequired: false),
+      _buildTextFormField(controller: controller.birthDistrictController, label: 'Birth District', icon: Icons.location_city, isRequired: false),
+      _buildTextFormField(controller: controller.rashiController, label: 'Rashi', icon: Icons.star_border, isRequired: false),
+      _buildTextFormField(controller: controller.nakshatraController, label: 'Nakshatra', icon: Icons.wb_sunny_outlined, isRequired: false),
     ]);
   }
 
-  Widget _buildHealthInfoForm() {
+  Widget _buildCareerDetailsForm() {
     return _buildFormWrapper([
-      _buildTextFormField(controller: controller.medicalConditionsController, label: 'Medical Conditions (comma-separated)', icon: Icons.medical_services_outlined, isRequired: false),
-      _buildTextFormField(controller: controller.allergiesController, label: 'Allergies (comma-separated)', icon: Icons.warning_amber_outlined, isRequired: false),
-      _buildTextFormField(controller: controller.medicationsController, label: 'Medications (comma-separated)', icon: Icons.medication_outlined, isRequired: false),
+      _buildTextFormField(controller: controller.degreeController, label: 'Degree', icon: Icons.school_outlined, isRequired: false),
+      _buildTextFormField(controller: controller.edufieldController, label: 'Education Field', icon: Icons.work_outline, isRequired: false),
+      _buildTextFormField(controller: controller.occupationTypeController, label: 'Occupation Type', icon: Icons.business_center_outlined, isRequired: false),
+      _buildTextFormField(controller: controller.occupationPlaceController, label: 'Occupation Place', icon: Icons.location_on_outlined, isRequired: false),
+      _buildTextFormField(controller: controller.personalIncomeController, label: 'Personal Income', icon: Icons.attach_money_outlined, isRequired: false, isNumeric: true),
     ]);
   }
 
-  Widget _buildMembershipForm() {
+  Widget _buildFamilyDetailsForm() {
     return _buildFormWrapper([
-      _buildTextFormField(controller: controller.membershipPlanIdController, label: 'Membership Plan ID', icon: Icons.card_membership_outlined, isRequired: false),
-      _buildTextFormField(controller: controller.membershipStartDateController, label: 'Start Date (YYYY-MM-DD)', icon: Icons.date_range_outlined, isRequired: false),
+      _buildCheckbox(title: 'Father Alive', value: controller.fatherAliveController),
+      _buildCheckbox(title: 'Mother Alive', value: controller.motherAliveController),
+      _buildTextFormField(controller: controller.brothersController, label: 'Number of Brothers', icon: Icons.group_outlined, isRequired: false, isNumeric: true),
+      _buildTextFormField(controller: controller.marriedBrothersController, label: 'Married Brothers', icon: Icons.group_outlined, isRequired: false, isNumeric: true),
+      _buildTextFormField(controller: controller.sistersController, label: 'Number of Sisters', icon: Icons.group_outlined, isRequired: false, isNumeric: true),
+      _buildTextFormField(controller: controller.marriedSisterController, label: 'Married Sisters', icon: Icons.group_outlined, isRequired: false, isNumeric: true),
+      _buildTextFormField(controller: controller.parentNamesController, label: 'Parent Names', icon: Icons.person_pin_circle_outlined, isRequired: false),
+      _buildTextFormField(controller: controller.parentOccupationController, label: 'Parent Occupation', icon: Icons.work_history_outlined, isRequired: false),
+      _buildTextFormField(controller: controller.parentsResideCityController, label: 'Parents Reside City', icon: Icons.location_city_outlined, isRequired: false),
+      _buildTextFormField(controller: controller.nativeDistrictController, label: 'Native District', icon: Icons.map, isRequired: false),
+      _buildTextFormField(controller: controller.nativeTalukaController, label: 'Native Taluka', icon: Icons.map_outlined, isRequired: false),
+      _buildTextFormField(controller: controller.familyEstateController, label: 'Family Estate', icon: Icons.home_work_outlined, isRequired: false),
+      _buildTextFormField(controller: controller.surnamesOfRelativesController, label: 'Surnames of Relatives (comma-separated)', icon: Icons.people_alt_outlined, isRequired: false),
+      _buildTextFormField(controller: controller.maternalPlaceSurnameController, label: 'Maternal Place Surname', icon: Icons.family_restroom_outlined, isRequired: false),
+      _buildTextFormField(controller: controller.intercasteStatusController, label: 'Intercaste Status', icon: Icons.merge_type_outlined, isRequired: false),
+      _buildTextFormField(controller: controller.intercasteDetailsController, label: 'Intercaste Details', icon: Icons.info_outline, isRequired: false),
     ]);
   }
 
-  Widget _buildProfileForm() {
+  Widget _buildExpectationsForm() {
     return _buildFormWrapper([
-      _buildTextFormField(controller: controller.profileImageUrlController, label: 'Profile Image URL', icon: Icons.image_outlined, isRequired: false),
-      _buildCheckbox(title: 'Receive Notifications', value: controller.receiveNotifications),
+      _buildTextFormField(controller: controller.preferredCitiesController, label: 'Preferred Cities (comma-separated)', icon: Icons.location_city_rounded, isRequired: false),
+      _buildCheckbox(title: 'Mangal Dosh', value: controller.mangalDoshController),
+      _buildTextFormField(controller: controller.expectedSubCasteController, label: 'Expected Sub-Caste', icon: Icons.people_outline, isRequired: false),
+      _buildTextFormField(controller: controller.expectedHeightController, label: 'Expected Height', icon: Icons.height_outlined, isRequired: false),
+      _buildTextFormField(controller: controller.minAgeGapController, label: 'Min Age Gap', icon: Icons.calendar_view_day_outlined, isRequired: false, isNumeric: true),
+      _buildTextFormField(controller: controller.expectedEducationController, label: 'Expected Education', icon: Icons.school, isRequired: false),
+      _buildTextFormField(controller: controller.expectedOccupationController, label: 'Expected Occupation', icon: Icons.work, isRequired: false),
+      _buildTextFormField(controller: controller.incomePerMonthController, label: 'Expected Income Per Month', icon: Icons.payments_outlined, isRequired: false, isNumeric: true),
+      _buildTextFormField(controller: controller.expectedMaritalStatusController, label: 'Expected Marital Status', icon: Icons.family_restroom_sharp, isRequired: false),
+    ]);
+  }
+
+  Widget _buildProfilePhotosForm() {
+    return _buildFormWrapper([
+      _buildTextFormField(controller: controller.profilePicUrlController, label: 'Profile Picture URL', icon: Icons.image_search, isRequired: false),
+      _buildTextFormField(controller: controller.albumController, label: 'Album Image URLs (comma-separated)', icon: Icons.photo_album_outlined, isRequired: false),
     ]);
   }
 }

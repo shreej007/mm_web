@@ -1,52 +1,84 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:myapp/app/data/api_service.dart';
-import 'package:myapp/app/data/api_urls.dart';
 import 'package:myapp/app/data/models/user_model.dart';
+import 'package:myapp/app/data/models/basic_info_model.dart';
+import 'package:myapp/app/data/models/physical_attribute_model.dart';
+import 'package:myapp/app/data/models/horoscope_details_model.dart';
+import 'package:myapp/app/data/models/career_details_model.dart';
+import 'package:myapp/app/data/models/family_details_model.dart';
+import 'package:myapp/app/data/models/expectations_model.dart';
+import 'package:myapp/app/data/models/profile_photos_model.dart';
 
 class AddUserController extends GetxController {
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   final ApiService _apiService = ApiService();
 
-  // --- State Management ---
   final isEditing = false.obs;
   final isLoading = false.obs;
   UserModel? _editingUser;
 
-  // --- Section 1: Personal Information ---
+  // --- Basic Info ---
   final firstNameController = TextEditingController();
+  final middleNameController = TextEditingController();
   final lastNameController = TextEditingController();
-  final dateOfBirthController = TextEditingController();
   final genderController = TextEditingController();
-
-  // --- Section 2: Contact Information ---
+  final birthdateController = TextEditingController();
+  final subCasteController = TextEditingController();
   final emailController = TextEditingController();
-  final phoneNumberController = TextEditingController();
+  final mobileController = TextEditingController();
 
-  // --- Section 3: Address ---
-  final streetController = TextEditingController();
-  final cityController = TextEditingController();
-  final stateController = TextEditingController();
-  final zipCodeController = TextEditingController();
-  final countryController = TextEditingController();
+  // --- Physical Attribute ---
+  final heightController = TextEditingController();
+  final weightController = TextEditingController();
+  final complexionController = TextEditingController();
+  final bloodGroupController = TextEditingController();
 
-  // --- Section 4: Emergency Contact ---
-  final emergencyContactNameController = TextEditingController();
-  final emergencyContactRelationshipController = TextEditingController();
-  final emergencyContactPhoneController = TextEditingController();
+  // --- Horoscope Details ---
+  final birthTimeController = TextEditingController();
+  final birthDistrictController = TextEditingController();
+  final rashiController = TextEditingController();
+  final nakshatraController = TextEditingController();
 
-  // --- Section 5: Health Information ---
-  final medicalConditionsController = TextEditingController();
-  final allergiesController = TextEditingController();
-  final medicationsController = TextEditingController();
+  // --- Career Details ---
+  final degreeController = TextEditingController();
+  final edufieldController = TextEditingController();
+  final occupationTypeController = TextEditingController();
+  final occupationPlaceController = TextEditingController();
+  final personalIncomeController = TextEditingController();
 
-  // --- Section 6: Membership ---
-  final membershipPlanIdController = TextEditingController();
-  final membershipStartDateController = TextEditingController();
+  // --- Family Details ---
+  final fatherAliveController = true.obs;
+  final motherAliveController = true.obs;
+  final brothersController = TextEditingController();
+  final marriedBrothersController = TextEditingController();
+  final sistersController = TextEditingController();
+  final marriedSisterController = TextEditingController();
+  final parentNamesController = TextEditingController();
+  final parentOccupationController = TextEditingController();
+  final parentsResideCityController = TextEditingController();
+  final nativeDistrictController = TextEditingController();
+  final nativeTalukaController = TextEditingController();
+  final familyEstateController = TextEditingController();
+  final surnamesOfRelativesController = TextEditingController();
+  final maternalPlaceSurnameController = TextEditingController();
+  final intercasteStatusController = TextEditingController();
+  final intercasteDetailsController = TextEditingController();
 
-  // --- Section 7: Profile & Settings ---
-  final profileImageUrlController = TextEditingController();
-  final receiveNotifications = true.obs; // Using RxBool for checkbox
+  // --- Expectations ---
+  final preferredCitiesController = TextEditingController();
+  final mangalDoshController = false.obs;
+  final expectedSubCasteController = TextEditingController();
+  final expectedHeightController = TextEditingController();
+  final minAgeGapController = TextEditingController();
+  final expectedEducationController = TextEditingController();
+  final expectedOccupationController = TextEditingController();
+  final incomePerMonthController = TextEditingController();
+  final expectedMaritalStatusController = TextEditingController();
+
+  // --- Profile Photos ---
+  final profilePicUrlController = TextEditingController();
+  final albumController = TextEditingController();
 
   @override
   void onInit() {
@@ -59,106 +91,147 @@ class AddUserController extends GetxController {
   }
 
   void _populateFields(UserModel user) {
-    // Section 1: Personal Info
-    if (user.personalInfo != null) {
-      firstNameController.text = user.personalInfo!.firstName;
-      lastNameController.text = user.personalInfo!.lastName;
-      dateOfBirthController.text = user.personalInfo!.dateOfBirth;
-      genderController.text = user.personalInfo!.gender;
-    }
+    // Basic Info
+    firstNameController.text = user.basicInfo?.firstName ?? '';
+    middleNameController.text = user.basicInfo?.middleName ?? '';
+    lastNameController.text = user.basicInfo?.lastName ?? '';
+    genderController.text = user.basicInfo?.gender ?? '';
+    birthdateController.text = user.basicInfo?.birthdate ?? '';
+    subCasteController.text = user.basicInfo?.subCaste ?? '';
+    emailController.text = user.basicInfo?.email ?? '';
+    mobileController.text = user.basicInfo?.mobile ?? '';
 
-    // Section 2: Contact Info
-    if (user.contactInfo != null) {
-      emailController.text = user.contactInfo!.email;
-      phoneNumberController.text = user.contactInfo!.phoneNumber;
-    }
+    // Physical Attribute
+    heightController.text = user.physicalAttribute?.height ?? '';
+    weightController.text = user.physicalAttribute?.weight ?? '';
+    complexionController.text = user.physicalAttribute?.complexion ?? '';
+    bloodGroupController.text = user.physicalAttribute?.bloodGroup ?? '';
 
-    // Section 3: Address
-    if (user.address != null) {
-      streetController.text = user.address!.street;
-      cityController.text = user.address!.city;
-      stateController.text = user.address!.state;
-      zipCodeController.text = user.address!.zipCode;
-      countryController.text = user.address!.country;
-    }
+    // Horoscope Details
+    birthTimeController.text = user.horoscopeDetails?.birthTime ?? '';
+    birthDistrictController.text = user.horoscopeDetails?.birthDistrict ?? '';
+    rashiController.text = user.horoscopeDetails?.rashi ?? '';
+    nakshatraController.text = user.horoscopeDetails?.nakshatra ?? '';
 
-    // Section 4: Emergency Contact
-    if (user.emergencyContact != null) {
-      emergencyContactNameController.text = user.emergencyContact!.name;
-      emergencyContactRelationshipController.text = user.emergencyContact!.relationship;
-      emergencyContactPhoneController.text = user.emergencyContact!.phone;
-    }
+    // Career Details
+    degreeController.text = user.careerDetails?.degree ?? '';
+    edufieldController.text = user.careerDetails?.edufield ?? '';
+    occupationTypeController.text = user.careerDetails?.occupationType ?? '';
+    occupationPlaceController.text = user.careerDetails?.occupationPlace ?? '';
+    personalIncomeController.text = user.careerDetails?.personalIncome?.toString() ?? '';
 
-    // Section 5: Health Info
-    if (user.healthInfo != null) {
-      medicalConditionsController.text = user.healthInfo!.medicalConditions.join(', ');
-      allergiesController.text = user.healthInfo!.allergies.join(', ');
-      medicationsController.text = user.healthInfo!.medications.join(', ');
-    }
+    // Family Details
+    fatherAliveController.value = user.familyDetails?.fatherAlive ?? true;
+    motherAliveController.value = user.familyDetails?.motherAlive ?? true;
+    brothersController.text = user.familyDetails?.brothers?.toString() ?? '';
+    marriedBrothersController.text = user.familyDetails?.marriedBrothers?.toString() ?? '';
+    sistersController.text = user.familyDetails?.sisters?.toString() ?? '';
+    marriedSisterController.text = user.familyDetails?.marriedSister?.toString() ?? '';
+    parentNamesController.text = user.familyDetails?.parentNames ?? '';
+    parentOccupationController.text = user.familyDetails?.parentOccupation ?? '';
+    parentsResideCityController.text = user.familyDetails?.parentsResideCity ?? '';
+    nativeDistrictController.text = user.familyDetails?.nativeDistrict ?? '';
+    nativeTalukaController.text = user.familyDetails?.nativeTaluka ?? '';
+    familyEstateController.text = user.familyDetails?.familyEstate ?? '';
+    surnamesOfRelativesController.text = user.familyDetails?.surnamesOfRelatives?.join(', ') ?? '';
+    maternalPlaceSurnameController.text = user.familyDetails?.maternalPlaceSurname ?? '';
+    intercasteStatusController.text = user.familyDetails?.intercasteStatus ?? '';
+    intercasteDetailsController.text = user.familyDetails?.intercasteDetails ?? '';
 
-    // Section 6: Membership
-    if (user.membership != null) {
-      membershipPlanIdController.text = user.membership!.planId;
-      membershipStartDateController.text = user.membership!.startDate;
-    }
+    // Expectations
+    preferredCitiesController.text = user.expectations?.preferredCities?.join(', ') ?? '';
+    mangalDoshController.value = user.expectations?.mangalDosh ?? false;
+    expectedSubCasteController.text = user.expectations?.expectedSubCaste ?? '';
+    expectedHeightController.text = user.expectations?.expectedHeight ?? '';
+    minAgeGapController.text = user.expectations?.minAgeGap?.toString() ?? '';
+    expectedEducationController.text = user.expectations?.expectedEducation ?? '';
+    expectedOccupationController.text = user.expectations?.expectedOccupation ?? '';
+    incomePerMonthController.text = user.expectations?.incomePerMonth?.toString() ?? '';
+    expectedMaritalStatusController.text = user.expectations?.expectedMaritalStatus ?? '';
 
-    // Section 7: Profile
-    if (user.profile != null) {
-      profileImageUrlController.text = user.profile!.profileImageUrl;
-      receiveNotifications.value = user.profile!.receiveNotifications;
-    }
+    // Profile Photos
+    profilePicUrlController.text = user.profilePhotos?.profilePicUrl ?? '';
+    albumController.text = user.profilePhotos?.album?.join(', ') ?? '';
   }
 
   void saveUser() async {
     if (formKey.currentState!.validate()) {
       isLoading(true);
 
-      final userData = {
-        'personalInfo': {
-          'firstName': firstNameController.text,
-          'lastName': lastNameController.text,
-          'dateOfBirth': dateOfBirthController.text,
-          'gender': genderController.text,
-        },
-        'contactInfo': {
-          'email': emailController.text,
-          'phoneNumber': phoneNumberController.text,
-        },
-        'address': {
-          'street': streetController.text,
-          'city': cityController.text,
-          'state': stateController.text,
-          'zipCode': zipCodeController.text,
-          'country': countryController.text,
-        },
-        'emergencyContact': {
-          'name': emergencyContactNameController.text,
-          'relationship': emergencyContactRelationshipController.text,
-          'phone': emergencyContactPhoneController.text,
-        },
-        'healthInfo': {
-          'medicalConditions': medicalConditionsController.text.split(',').map((e) => e.trim()).toList(),
-          'allergies': allergiesController.text.split(',').map((e) => e.trim()).toList(),
-          'medications': medicationsController.text.split(',').map((e) => e.trim()).toList(),
-        },
-        'membership': {
-          'planId': membershipPlanIdController.text,
-          'startDate': membershipStartDateController.text,
-        },
-        'profile': {
-          'profileImageUrl': profileImageUrlController.text,
-          'receiveNotifications': receiveNotifications.value,
-        },
-      };
+      final user = UserModel(
+        id: _editingUser?.id,
+        basicInfo: BasicInfo(
+          firstName: firstNameController.text,
+          middleName: middleNameController.text,
+          lastName: lastNameController.text,
+          gender: genderController.text,
+          birthdate: birthdateController.text,
+          subCaste: subCasteController.text,
+          email: emailController.text,
+          mobile: mobileController.text,
+        ),
+        physicalAttribute: PhysicalAttribute(
+          height: heightController.text,
+          weight: weightController.text,
+          complexion: complexionController.text,
+          bloodGroup: bloodGroupController.text,
+        ),
+        horoscopeDetails: HoroscopeDetails(
+          birthTime: birthTimeController.text,
+          birthDistrict: birthDistrictController.text,
+          rashi: rashiController.text,
+          nakshatra: nakshatraController.text,
+        ),
+        careerDetails: CareerDetails(
+          degree: degreeController.text,
+          edufield: edufieldController.text,
+          occupationType: occupationTypeController.text,
+          occupationPlace: occupationPlaceController.text,
+          personalIncome: double.tryParse(personalIncomeController.text),
+        ),
+        familyDetails: FamilyDetails(
+          fatherAlive: fatherAliveController.value,
+          motherAlive: motherAliveController.value,
+          brothers: int.tryParse(brothersController.text),
+          marriedBrothers: int.tryParse(marriedBrothersController.text),
+          sisters: int.tryParse(sistersController.text),
+          marriedSister: int.tryParse(marriedSisterController.text),
+          parentNames: parentNamesController.text,
+          parentOccupation: parentOccupationController.text,
+          parentsResideCity: parentsResideCityController.text,
+          nativeDistrict: nativeDistrictController.text,
+          nativeTaluka: nativeTalukaController.text,
+          familyEstate: familyEstateController.text,
+          surnamesOfRelatives: surnamesOfRelativesController.text.split(',').map((e) => e.trim()).toList(),
+          maternalPlaceSurname: maternalPlaceSurnameController.text,
+          intercasteStatus: intercasteStatusController.text,
+          intercasteDetails: intercasteDetailsController.text,
+        ),
+        expectations: Expectations(
+          preferredCities: preferredCitiesController.text.split(',').map((e) => e.trim()).toList(),
+          mangalDosh: mangalDoshController.value,
+          expectedSubCaste: expectedSubCasteController.text,
+          expectedHeight: expectedHeightController.text,
+          minAgeGap: int.tryParse(minAgeGapController.text),
+          expectedEducation: expectedEducationController.text,
+          expectedOccupation: expectedOccupationController.text,
+          incomePerMonth: double.tryParse(incomePerMonthController.text),
+          expectedMaritalStatus: expectedMaritalStatusController.text,
+        ),
+        profilePhotos: ProfilePhotos(
+          profilePicUrl: profilePicUrlController.text,
+          album: albumController.text.split(',').map((e) => e.trim()).toList(),
+        ),
+      );
 
       try {
         if (isEditing.value) {
-          await _apiService.put(ApiUrls.userById(_editingUser!.id!), body: userData);
+          await _apiService.put('users/${_editingUser!.id}', body: user.toJson());
         } else {
-          await _apiService.post(ApiUrls.users, body: userData);
+          await _apiService.post('users', body: user.toJson());
         }
 
-        Get.back(result: true); // Signal success to the previous screen
+        Get.back(result: true);
         Get.snackbar('Success', 'User ${isEditing.value ? 'updated' : 'added'} successfully!');
       } on ApiException catch (e) {
         Get.snackbar('API Error', e.message, backgroundColor: Colors.red);
@@ -172,27 +245,51 @@ class AddUserController extends GetxController {
 
   @override
   void onClose() {
-    // Dispose all controllers
     firstNameController.dispose();
+    middleNameController.dispose();
     lastNameController.dispose();
-    dateOfBirthController.dispose();
     genderController.dispose();
+    birthdateController.dispose();
+    subCasteController.dispose();
     emailController.dispose();
-    phoneNumberController.dispose();
-    streetController.dispose();
-    cityController.dispose();
-    stateController.dispose();
-    zipCodeController.dispose();
-    countryController.dispose();
-    emergencyContactNameController.dispose();
-    emergencyContactRelationshipController.dispose();
-    emergencyContactPhoneController.dispose();
-    medicalConditionsController.dispose();
-    allergiesController.dispose();
-    medicationsController.dispose();
-    membershipPlanIdController.dispose();
-    membershipStartDateController.dispose();
-    profileImageUrlController.dispose();
+    mobileController.dispose();
+    heightController.dispose();
+    weightController.dispose();
+    complexionController.dispose();
+    bloodGroupController.dispose();
+    birthTimeController.dispose();
+    birthDistrictController.dispose();
+    rashiController.dispose();
+    nakshatraController.dispose();
+    degreeController.dispose();
+    edufieldController.dispose();
+    occupationTypeController.dispose();
+    occupationPlaceController.dispose();
+    personalIncomeController.dispose();
+    brothersController.dispose();
+    marriedBrothersController.dispose();
+    sistersController.dispose();
+    marriedSisterController.dispose();
+    parentNamesController.dispose();
+    parentOccupationController.dispose();
+    parentsResideCityController.dispose();
+    nativeDistrictController.dispose();
+    nativeTalukaController.dispose();
+    familyEstateController.dispose();
+    surnamesOfRelativesController.dispose();
+    maternalPlaceSurnameController.dispose();
+    intercasteStatusController.dispose();
+    intercasteDetailsController.dispose();
+    preferredCitiesController.dispose();
+    expectedSubCasteController.dispose();
+    expectedHeightController.dispose();
+    minAgeGapController.dispose();
+    expectedEducationController.dispose();
+    expectedOccupationController.dispose();
+    incomePerMonthController.dispose();
+    expectedMaritalStatusController.dispose();
+    profilePicUrlController.dispose();
+    albumController.dispose();
     super.onClose();
   }
 }

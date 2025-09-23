@@ -1,6 +1,6 @@
 import 'package:get/get.dart';
 import 'package:myapp/app/data/api_service.dart';
-import 'package:myapp/app/data/models/membership_model.dart';
+import 'package:myapp/app/data/models/membership_model.dart' as membership_model;
 import 'package:myapp/app/data/models/user_model.dart';
 
 class MembershipController extends GetxController {
@@ -8,7 +8,7 @@ class MembershipController extends GetxController {
   final user = Rx<UserModel?>(null);
 
   var isLoading = true.obs;
-  var memberships = <Membership>[].obs;
+  var memberships = <membership_model.Membership>[].obs;
 
   @override
   void onInit() {
@@ -24,7 +24,7 @@ class MembershipController extends GetxController {
       isLoading(true);
       final response = await _apiService.get('users/$userId/memberships');
       if (response is List) {
-        memberships.value = response.map((json) => Membership.fromJson(json)).toList();
+        memberships.value = response.map((json) => membership_model.Membership.fromJson(json)).toList();
       } else {
         memberships.value = [];
       }

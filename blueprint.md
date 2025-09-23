@@ -1,65 +1,29 @@
+
 # Project Blueprint
 
 ## Overview
 
-This document outlines the architecture, features, and design of the Flutter Admin Panel application. The goal is to create a responsive and intuitive interface for managing users and memberships.
+This document outlines the architecture, design, and features of the Flutter application. It serves as a single source of truth for the project, and will be updated with each new change.
 
-## Current Features & Design
+## Style and Design
 
-*   **UI/UX:**
-    *   Modern design with a gradient-based color scheme.
-    *   Responsive layout for both mobile and web/desktop.
-    *   Dashboard with summary cards for key metrics (Total Users, Brides, Grooms).
-    *   User list with search and filter capabilities.
-    *   Detailed user view.
-    *   Membership plan management screen.
-*   **Architecture:**
-    *   Built with Flutter and the GetX framework for state management and routing.
-    *   Feature-based project structure (e.g., `modules/dashboard`, `modules/users`).
-    *   Currently uses dummy data for all functionality.
+The application follows the Material Design guidelines, with a focus on a clean and intuitive user interface.
 
-## Plan for Current Request: API Integration
+*   **Color Scheme:** The application uses a purple-based color scheme.
+*   **Typography:** The application uses the `GoogleFonts` package to provide a consistent and visually appealing typography.
 
-The following steps will be taken to connect the Flutter application to a Node.js/MongoDB backend API.
+## Implemented Features
 
-### 1. **Add HTTP Dependency**
-   - Add the `http` package to `pubspec.yaml` to enable making HTTP requests.
+*   **User Management:** The application allows for the creation, editing, and deletion of users.
+*   **Membership Management:** The application allows for the creation, editing, and deletion of memberships.
+*   **Dashboard:** The application provides a dashboard with a summary of the application's data.
+*   **Static Login:** The application provides a static login with the credentials `admin@gmail.com` and `1234`.
 
-### 2. **Create a Centralized API Service**
-   - Create a new file: `lib/app/data/api_service.dart`.
-   - This service will manage all network communication.
-   - It will include a placeholder for the base API URL (e.g., `http://your-api-url.com/api`).
-   - It will contain generic methods for `GET`, `POST`, `PUT`, and `DELETE` requests, handling JSON serialization and error responses.
+## Current Task: Implement Static Login
 
-### 3. **Update Data Models for Serialization**
-   - Modify `UserModel` (`lib/app/data/models/user_model.dart`) and `MembershipPlanModel` (`lib/app/data/models/membership_plan_model.dart`).
-   - Add `fromJson` and `toJson` factory methods to these models to allow easy conversion between Dart objects and JSON.
+### Plan
 
-### 4. **Integrate API with Login (`LoginController`)**
-   - **File:** `lib/app/modules/login/login_controller.dart`
-   - **Action:**
-     - Replace the current dummy authentication logic with an API call.
-     - The `login` method will send the username and password to a `POST /api/auth/login` endpoint.
-     - On success, it will store the received authentication token (e.g., in GetStorage or memory) and navigate to the dashboard.
-     - On failure, it will display an error message to the user.
+1.  **Analyze the `login_controller.dart` file:** I have analyzed the `login_controller.dart` file to identify the best place to add the new logic.
+2.  **Implement the static login:** I have replaced the existing API call with a simple check for the email `admin@gmail.com` and the password `1234`.
+3.  **Verify the fix:** I have verified that the static login functionality is working as expected.
 
-### 5. **Integrate API with User Management**
-   - **Files:** `UsersController`, `AddUserController`, `UserDetailsController`
-   - **Actions:**
-     - **`UsersController`:**
-       - Fetch the list of users from a `GET /api/users` endpoint instead of `dummy_users`.
-       - The search and filter logic will operate on the data fetched from the API.
-     - **`AddUserController`:**
-       - On saving a new user, send the user data to a `POST /api/users` endpoint.
-     - **`UserDetailsController`:**
-       - Fetch the complete details for a specific user from a `GET /api/users/{id}` endpoint.
-
-### 6. **Integrate API with Membership Management**
-   - **File:** `MembershipController`
-   - **Action:**
-     - Fetch the list of membership plans from a `GET /api/memberships` endpoint.
-     - Implement the logic in `AddEditMembershipScreen` to create or update plans using `POST /api/memberships` and `PUT /api/memberships/{id}` respectively.
-
-### 7. **Error Handling & State Management**
-   - Update all relevant controllers to manage loading (`isLoading`) and error states during API calls.
-   - The UI will be updated to show loading indicators and user-friendly error messages.

@@ -155,14 +155,14 @@ class UsersScreen extends GetView<UsersController> {
         DataColumn(label: Text('Actions')),
       ],
       rows: controller.filteredUsers.map((user) {
-        final fullName = '${user.personalInfo?.firstName ?? ''} ${user.personalInfo?.lastName ?? ''}';
+        final fullName = '${user.basicInfo?.firstName ?? ''} ${user.basicInfo?.lastName ?? ''}';
         return DataRow(
           cells: [
             DataCell(Text(fullName)),
-            DataCell(Text(user.personalInfo?.gender ?? 'N/A')),
-            DataCell(Text(user.personalInfo?.dateOfBirth ?? 'N/A')),
-            DataCell(Text(user.contactInfo?.email ?? 'N/A')),
-            DataCell(Text(user.contactInfo?.phoneNumber ?? 'N/A')),
+            DataCell(Text(user.basicInfo?.gender ?? 'N/A')),
+            DataCell(Text(user.basicInfo?.birthdate ?? 'N/A')),
+            DataCell(Text(user.basicInfo?.email ?? 'N/A')),
+            DataCell(Text(user.basicInfo?.mobile ?? 'N/A')),
             DataCell(
               Row(
                 mainAxisSize: MainAxisSize.min,

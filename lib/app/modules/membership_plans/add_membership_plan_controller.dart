@@ -52,9 +52,9 @@ class AddMembershipPlanController extends GetxController {
         );
 
         if (isEditing.value) {
-          await _apiService.put('membership-plans/${_editingPlan!.id}', plan.toJson());
+          await _apiService.put('membership-plans/${_editingPlan!.id}', body: plan.toJson());
         } else {
-          await _apiService.post('membership-plans', plan.toJson());
+          await _apiService.post('membership-plans', body: plan.toJson());
         }
         Get.back(result: true);
       } catch (e) {

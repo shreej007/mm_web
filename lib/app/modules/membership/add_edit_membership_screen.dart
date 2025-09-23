@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:myapp/app/data/models/membership_plan_model.dart';
 import 'package:myapp/app/modules/membership/add_edit_membership_controller.dart';
 
 class AddEditMembershipScreen extends GetView<AddEditMembershipController> {
@@ -22,9 +23,9 @@ class AddEditMembershipScreen extends GetView<AddEditMembershipController> {
                 if (controller.plans.isEmpty) {
                   return const CircularProgressIndicator();
                 }
-                return DropdownButtonFormField<MembershipPlan>(
+                return DropdownButtonFormField<MembershipPlanModel>(
                   items: controller.plans.map((plan) {
-                    return DropdownMenuItem<MembershipPlan>(
+                    return DropdownMenuItem<MembershipPlanModel>(
                       value: plan,
                       child: Text(plan.name),
                     );

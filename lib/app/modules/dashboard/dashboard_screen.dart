@@ -13,8 +13,8 @@ class DashboardScreen extends StatelessWidget {
     final UsersController usersController = Get.find<UsersController>();
     final isSmallScreen = MediaQuery.of(context).size.width < 600;
 
-    final bridesCount = usersController.filteredUsers.where((user) => user.basicInfo.gender.toLowerCase() == 'female').length;
-    final groomsCount = usersController.filteredUsers.where((user) => user.basicInfo.gender.toLowerCase() == 'male').length;
+    final bridesCount = usersController.filteredUsers.where((user) => user.basicInfo!.gender?.toLowerCase() == 'female').length;
+    final groomsCount = usersController.filteredUsers.where((user) => user.basicInfo!.gender?.toLowerCase() == 'male').length;
 
     return Scaffold(
       body: SafeArea(
